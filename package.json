@@ -1,0 +1,14 @@
+{
+  "name": "bildbearbeitungs",
+  "version": "0.0.1",
+  "description": "An example module to illustrate the usage of a package.json",
+  "author": "Evandro Eisinger <evandroeisinger@gmail.com>",
+  "scripts": {
+    "test": "vows --spec --isolate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evandroeisinger/bildbearbeitungs"
+  },
+  "license": "MIT"
+}
