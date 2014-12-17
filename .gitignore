@@ -1,0 +1,4 @@
+# Ignore all logfiles and tempfiles.
+npm-debug.log
+node_modules
+.DS_Store
