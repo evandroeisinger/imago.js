@@ -18,8 +18,6 @@
 		self.cancelCropButton 	= document.createElement('button');
 		self.cropHandlers				= document.createElement('div');
 		self.topLeftHandler 		= document.createElement('span');
-		self.topRightHandler 		= document.createElement('span');
-		self.bottomLeftHandler 	= document.createElement('span');
 		self.bottomRightHandler = document.createElement('span');
 		
 		self.cropButton.className 			  += 'crop';
@@ -30,8 +28,6 @@
 		self.cancelCropButton.className 	+= 'crop__actions__cancel';
 		self.cropHandlers.className			  += 'crop__handlers';
 		self.topLeftHandler.className 	  += 'crop__handlers__top-left';
-		self.topRightHandler.className    += 'crop__handlers__top-right';
-		self.bottomLeftHandler.className  += 'crop__handlers__bottom-left';
 		self.bottomRightHandler.className += 'crop__handlers__bottom-right';
 
 		this.applyResize = function(e) {
@@ -127,8 +123,6 @@
 			self.saveCropButton.addEventListener('click', self.save);
 			self.cancelCropButton.addEventListener('click', self.cancel);
 			self.topLeftHandler.addEventListener('mousedown', self.applyResize);
-			self.topRightHandler.addEventListener('mousedown', self.applyResize);
-			self.bottomLeftHandler.addEventListener('mousedown', self.applyResize);
 			self.bottomRightHandler.addEventListener('mousedown', self.applyResize);
 		}
 
@@ -168,8 +162,6 @@
 			var self = this;
 
 			self.cropHandlers.appendChild(self.topLeftHandler);
-			self.cropHandlers.appendChild(self.topRightHandler);
-			self.cropHandlers.appendChild(self.bottomLeftHandler);
 			self.cropHandlers.appendChild(self.bottomRightHandler);
 			self.figure.appendChild(self.cropHandlers);
 
@@ -271,16 +263,12 @@
 			self.cropActions.removeChild(self.cancelCropButton);
 			self.figure.removeChild(self.cropActions);
 			self.cropHandlers.removeChild(self.topLeftHandler);
-			self.cropHandlers.removeChild(self.topRightHandler);
-			self.cropHandlers.removeChild(self.bottomLeftHandler);
 			self.cropHandlers.removeChild(self.bottomRightHandler);
 			self.figure.removeChild(self.cropHandlers);
 
 			self.saveCropButton.removeEventListener('click', self.save);
 			self.cancelCropButton.removeEventListener('click', self.cancel);
 			self.topLeftHandler.removeEventListener('mousedown', self.applyResize);
-			self.topRightHandler.removeEventListener('mousedown', self.applyResize);
-			self.bottomLeftHandler.removeEventListener('mousedown', self.applyResize);
 			self.bottomRightHandler.removeEventListener('mousedown', self.applyResize);
 
 			return self;
