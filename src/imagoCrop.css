@@ -1,0 +1,111 @@
+.figure { 
+	position: relative;
+	overflow: hidden;
+}
+
+.figure.figure--cropping { overflow: inherit; }
+.figure.figure--cropping .figure__actions { display: none; }
+.figure.figure--cropping .figure__image,
+.figure.figure--modified .figure__image { position: absolute; }
+
+.crop__actions {
+	position: absolute;
+	text-align: center;
+	z-index: 50;
+	margin: 0 100px;
+	box-sizing: border-box;
+	left: 0;
+	right: 0;
+	top: 20px;
+}
+
+.crop__actions button {
+	font-family: sans-serif;
+	border: 1px solid rgb(235, 235, 235);
+	background: white;
+	font-size: 12px;
+	color: rgb(235, 235, 235);
+	margin: 0 2px;
+	border-radius: 2px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.crop__actions button:hover {
+	border: 1px solid gray;
+	color: gray;
+}
+
+.crop__handlers {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 40;
+}
+
+.crop__handlers span {
+	position: absolute;
+	border: 4px solid white;
+	width: 12px;
+	height: 12px;
+	z-index: 50;
+	margin: 5px;
+}
+
+.crop__handlers span:active {
+	border-color: grey;
+}
+
+.crop__handlers span.crop__handlers__top-left{
+	border-right: 0;
+	border-bottom: 0;
+	cursor: nw-resize;
+	top: 0;
+	left: 0;
+}
+
+.crop__handlers span.crop__handlers__top-right {
+	border-left: 0;
+	border-bottom: 0;
+	cursor: ne-resize;
+	top: 0;
+	right: 0;
+}
+
+.crop__handlers span.crop__handlers__bottom-left {
+	border-right: 0;
+	border-top: 0;
+	cursor: sw-resize;
+	bottom: 0;
+	left: 0;
+}
+
+.crop__handlers span.crop__handlers__bottom-right {
+	border-left: 0;
+	border-top: 0;
+	cursor: se-resize;
+	bottom: 0;
+	right: 0;
+}
+
+.crop__mask {
+	position: absolute;
+	background: rgba(255, 255, 255, 0.5);
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	z-index: 25;
+}
+
+.crop__wrapper {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+	z-index: 25;
+}

@@ -1,0 +1,40 @@
+.figure {
+	margin: 0;
+	padding: 0;
+	display: block;
+	line-height: 0;
+}
+
+.figure__image {
+	width: 100%;
+	z-index: 0;
+}
+
+.figure__actions {
+	position: absolute;
+	text-align: center;
+	z-index: 50;
+	margin: 0 100px;
+	box-sizing: border-box;
+	left: 0;
+	right: 0;
+	top: 20px;
+}
+.figure.figure--cropping .figure__actions { display: none; }
+
+.figure__actions button {
+	font-family: sans-serif;
+	border: 1px solid rgb(235, 235, 235);
+	background: white;
+	font-size: 12px;
+	color: rgb(235, 235, 235);
+	margin: 0 2px;
+	border-radius: 2px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.figure__actions button:hover {
+	border: 1px solid gray;
+	color: gray;
+}
