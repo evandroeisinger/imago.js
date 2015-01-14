@@ -161,7 +161,7 @@
 
       self
         .calculateDragging(e)
-        .applyPositions();
+        .render(self.applyPositions);
     };
 
     this.apply = function() {
@@ -186,12 +186,20 @@
       self.bottomRightHandler.addEventListener('mousedown', self.applyResize);
     }
 
-
     self.cropButton.addEventListener('click', self.apply);
     self.actions.appendChild(self.cropButton);
   }
 
   Crop.prototype = {
+    render: function(method) {
+      var self = this;
+
+      self.tmp.renderId = window.setTimeout(function(){
+        window.clearTimeout(self.tmp.renderId);
+        method.call(self);
+      }, 25);
+    },
+
     insertMask: function() {
       var self = this;
 
