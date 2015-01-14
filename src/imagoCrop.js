@@ -93,13 +93,9 @@
       if (self.figure.className.indexOf('figure--modified') < 0)
         self.figure.className += ' figure--modified';
 
-      self.figure.setAttribute('data-orig-width', self.crop.originalWidth);
-      self.figure.setAttribute('data-orig-height', self.crop.originalHeight);
-      self.figure.setAttribute('data-width', self.crop.width);
-      self.figure.setAttribute('data-height', self.crop.height);
-      self.figure.setAttribute('data-top', self.crop.top);
-      self.figure.setAttribute('data-left', self.crop.left);
-      self.removeElements();
+      self
+        .applyDataAttributes()
+        .removeElements();
     }
 
     this.cancel = function(e) {
@@ -165,13 +161,22 @@
     };
 
     this.apply = function() {
+
+      self.crop.originalWidth  = self.figure.getAttribute('data-orig-width')  || self.image.clientWidth;
+      self.crop.originalHeight = self.figure.getAttribute('data-orig-height') || self.image.clientHeight;
+      self.crop.width          = self.figure.getAttribute('data-width')       || self.image.clientWidth;
+      self.crop.height         = self.figure.getAttribute('data-height')      || self.image.clientHeight;
+      self.crop.top            = self.figure.getAttribute('data-top')         || 0;
+      self.crop.left           = self.figure.getAttribute('data-left')        || 0;
+
       self
-        .getDimensions()
+        .applyDataAttributes()
         .insertHandlers()
         .insertMask()
         .insertActions()
         .insertWrapper()
-        .applyDimensions();
+        .applyDimensions()
+        .applyPositions();
 
       self.figure.className.replace(' figure--modified', '');
       self.figure.className += ' figure--cropping';
@@ -238,15 +243,15 @@
       return self;
     },
 
-    getDimensions: function() {
+    applyDataAttributes: function() {
       var self = this;
 
-      self.crop.originalWidth  = self.figure.getAttribute('data-orig-width') || self.image.clientWidth;
-      self.crop.originalHeight = self.figure.getAttribute('data-orig-height') || self.image.clientHeight;
-      self.crop.width          = self.figure.getAttribute('data-width') || self.image.clientWidth;
-      self.crop.height         = self.figure.getAttribute('data-height') || self.image.clientHeight;
-      self.crop.top            = self.figure.getAttribute('data-top') || 0;
-      self.crop.left           = self.figure.getAttribute('data-left') || 0;
+      self.figure.setAttribute('data-orig-width', self.crop.originalWidth);
+      self.figure.setAttribute('data-orig-height', self.crop.originalHeight);
+      self.figure.setAttribute('data-width', self.crop.width);
+      self.figure.setAttribute('data-height', self.crop.height);
+      self.figure.setAttribute('data-top', self.crop.top);
+      self.figure.setAttribute('data-left', self.crop.left);
 
       return self;
     },
@@ -368,6 +373,8 @@
           top     = [self.figure.getAttribute('data-top'), 'px'].join(''),
           left    = [self.figure.getAttribute('data-left'), 'px'].join('');
       
+      console.log(width, height, top, left)
+
       self.image.style.width        = width;
       self.shadowImage.style.width  = width;
       self.cropMask.style.width     = width;
