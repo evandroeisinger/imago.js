@@ -45,6 +45,16 @@
 	z-index: 40;
 }
 
+.crop__handlers__move {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  position: absolute;
+  cursor: move;
+}
+
 .crop__handlers span {
 	position: absolute;
 	border: 4px solid white;
