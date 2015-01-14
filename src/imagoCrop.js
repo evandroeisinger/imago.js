@@ -147,7 +147,6 @@
       document.addEventListener('mouseup', self.stopDrag);
     }
 
-
     this.stopDrag = function (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -177,10 +176,8 @@
       self.figure.className.replace(' figure--modified', '');
       self.figure.className += ' figure--cropping';
 
-      self.figure.setAttribute('style',[
-        'width:', self.crop.originalWidth, 'px;', 
-        'height:', self.crop.originalHeight, 'px;'
-      ].join(''));
+      self.figure.style.width = [self.crop.originalWidth, 'px'].join('');
+      self.figure.style.height = [self.crop.originalHeight, 'px'].join('');
 
       self.saveCropButton.addEventListener('click', self.save);
       self.cancelCropButton.addEventListener('click', self.cancel);
@@ -233,7 +230,7 @@
       return self;
     },
 
-    getDimensions: function(old) {
+    getDimensions: function() {
       var self = this;
 
       self.crop.originalWidth  = self.figure.getAttribute('data-orig-width') || self.image.clientWidth;
@@ -357,21 +354,31 @@
     },
 
     restoreCropping: function() {
-      var self        = this,
-          dimensions  = [];
-          
-      dimensions.push(
-        'width:', self.figure.getAttribute('data-width'), 'px;',
-        'height:', self.figure.getAttribute('data-height'), 'px;',
-        'top:', self.figure.getAttribute('data-top'), 'px;',
-        'left:', self.figure.getAttribute('data-left'), 'px;');
+      var self    = this,
+          width   = [self.figure.getAttribute('data-width'), 'px'].join(''),
+          height  = [self.figure.getAttribute('data-height'), 'px'].join(''),
+          top     = [self.figure.getAttribute('data-top'), 'px'].join(''),
+          left    = [self.figure.getAttribute('data-left'), 'px'].join('');
+      
+      self.image.style.width        = width;
+      self.shadowImage.style.width  = width;
+      self.cropMask.style.width     = width;
+      self.cropHandlers.style.width = width;
 
-      dimensions = dimensions.join('');
-
-      self.image.setAttribute('style', dimensions);
-      self.shadowImage.setAttribute('style', dimensions);
-      self.cropMask.setAttribute('style', dimensions);
-      self.cropHandlers.setAttribute('style', dimensions);
+      self.image.style.height        = height;
+      self.shadowImage.style.height  = height;
+      self.cropMask.style.height     = height;
+      self.cropHandlers.style.height = height;
+      
+      self.image.style.top        = top;
+      self.shadowImage.style.top  = top;
+      self.cropMask.style.top     = top;
+      self.cropHandlers.style.top = top;
+      
+      self.image.style.left        = left;
+      self.shadowImage.style.left  = left;
+      self.cropMask.style.left     = left;
+      self.cropHandlers.style.left = left;
 
       return self;
     },
