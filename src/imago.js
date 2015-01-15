@@ -31,7 +31,7 @@
 			export: function() {
 				for (plugin in self.plugins)
 					if (self.plugins[plugin].export)
-						self.plugins[plugin].export();
+						return self.plugins[plugin].export();
 			}
 		}
 	}

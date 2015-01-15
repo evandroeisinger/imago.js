@@ -212,7 +212,7 @@
 
       self.figure.parentNode.removeChild(self.figure);
 
-      return self;
+      return image;
     },
 
     process: function(method) {
