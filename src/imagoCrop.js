@@ -341,18 +341,33 @@
       top     = top - self.tmp.figureTop;
       left    = left - self.tmp.figureLeft;
       
-      if (width < self.crop.originalWidth)
-        width = self.crop.originalWidth;
-      if (height < self.crop.originalHeight)
-        height = self.crop.originalHeight;
-      if (top > 0)
+      if (top > 0) {
         top = 0;
-      if (left > 0)
+      }
+
+      if (left > 0) {
         left = 0;
-      if (bottom > 0)
+      }
+
+      if (bottom > 0) {
+        top = top - (bottom * -1);
         height = (top * -1) + self.tmp.figureHeight;
-      if (right > 0)
-        width = (left * -1) + + self.tmp.figureWidth;
+      } 
+
+      if (right > 0) {
+        left = left - (right * -1);
+        width = (left * -1) + self.tmp.figureWidth;
+      }
+
+      if (width < self.crop.originalWidth) {
+        left = 0;
+        width = self.crop.originalWidth;
+      }
+
+      if (height < self.crop.originalHeight) {
+        top = 0;
+        height = self.crop.originalHeight;
+      }
 
       self.crop.top       = Math.round(top);
       self.crop.left      = Math.round(left);
