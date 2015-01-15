@@ -14,16 +14,25 @@
 		figure.appendChild(actions);
 		figure.appendChild(image);
 
+		self.plugins = {};
 		self.elements = {
 			image: image,
 			figure: figure,
 			actions: actions,
 			parent: parent
-		}
+		};
 
 		image.onload = function() {
 			for (plugin in plugins)
 				self.plugins[plugin] = new plugins[plugin](self);
+		}
+
+		return {
+			export: function() {
+				for (plugin in self.plugins)
+					if (self.plugins[plugin].export)
+						self.plugins[plugin].export();
+			}
 		}
 	}
 

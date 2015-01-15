@@ -30,10 +30,16 @@
       e.stopPropagation();
       
       self
-        .insertHandlers()
-        .insertMask()
-        .insertActions()
-        .insertWrapper()
+        .insertElement(self.moveHandler, self.cropHandlers)
+        .insertElement(self.topLeftHandler, self.cropHandlers)
+        .insertElement(self.bottomRightHandler, self.cropHandlers)
+        .insertElement(self.cropHandlers, self.figure)
+        .insertElement(self.cropMask, self.figure)
+        .insertElement(self.saveCropButton, self.cropActions)
+        .insertElement(self.cancelCropButton, self.cropActions)
+        .insertElement(self.cropActions, self.figure)
+        .insertElement(self.shadowImage, self.cropWrapper)
+        .insertElement(self.cropWrapper, self.figure)
         .applyDimensions()
         .applyPositions();
 
@@ -55,7 +61,7 @@
         self.figure.className += ' figure--modified';
 
       self
-        .applyDataAttributes()
+        .applyDataAttributes(self.figure)
         .removeElements();
     }
 
@@ -161,7 +167,7 @@
 
       self
         .calculateDragging(e)
-        .render(self.applyPositions);
+        .process(self.applyPositions);
     }
 
     this.stopDrag = function (e) {
@@ -185,7 +191,7 @@
 
     self
       .loadDataAttributes()
-      .applyDataAttributes()
+      .applyDataAttributes(self.figure)
       .applyDimensions()
       .applyPositions();
 
@@ -194,7 +200,22 @@
   }
 
   Crop.prototype = {
-    render: function(method) {
+    export: function() {
+      var self = this,
+          image = document.createElement('img');
+
+      image.src = self.image.src;
+
+      self
+        .applyDataAttributes(image)
+        .insertElement(image, self.figure, true);
+
+      self.figure.parentNode.removeChild(self.figure);
+
+      return self;
+    },
+
+    process: function(method) {
       var self = this;
 
       self.tmp.renderId = window.setTimeout(function(){
@@ -203,40 +224,13 @@
       }, 25);
     },
 
-    insertMask: function() {
+    insertElement: function(element, wrapper, before) {
       var self = this;
 
-      self.figure.appendChild(self.cropMask);
-
-      return self;
-    },
-
-    insertWrapper: function() {
-      var self = this;
-
-      self.cropWrapper.appendChild(self.shadowImage);
-      self.figure.appendChild(self.cropWrapper);
-
-      return self;
-    },
-
-    insertActions: function() {
-      var self = this;
-
-      self.cropActions.appendChild(self.saveCropButton);
-      self.cropActions.appendChild(self.cancelCropButton);
-      self.figure.appendChild(self.cropActions);
-
-      return self;
-    },
-
-    insertHandlers: function() {
-      var self = this;
-
-      self.cropHandlers.appendChild(self.moveHandler);
-      self.cropHandlers.appendChild(self.topLeftHandler);
-      self.cropHandlers.appendChild(self.bottomRightHandler);
-      self.figure.appendChild(self.cropHandlers);
+        if (before)
+          wrapper.parentNode.insertBefore(element, wrapper);
+        else
+          wrapper.appendChild(element);
 
       return self;
     },
@@ -263,15 +257,15 @@
       return self;
     },
 
-    applyDataAttributes: function() {
+    applyDataAttributes: function(element) {
       var self = this;
 
-      self.figure.setAttribute('data-orig-width', self.crop.originalWidth);
-      self.figure.setAttribute('data-orig-height', self.crop.originalHeight);
-      self.figure.setAttribute('data-width', self.crop.width);
-      self.figure.setAttribute('data-height', self.crop.height);
-      self.figure.setAttribute('data-top', self.crop.top);
-      self.figure.setAttribute('data-left', self.crop.left);
+      element.setAttribute('data-orig-width', self.crop.originalWidth);
+      element.setAttribute('data-orig-height', self.crop.originalHeight);
+      element.setAttribute('data-width', self.crop.width);
+      element.setAttribute('data-height', self.crop.height);
+      element.setAttribute('data-top', self.crop.top);
+      element.setAttribute('data-left', self.crop.left);
 
       return self;
     },
@@ -409,8 +403,6 @@
           height  = [self.figure.getAttribute('data-height'), 'px'].join(''),
           top     = [self.figure.getAttribute('data-top'), 'px'].join(''),
           left    = [self.figure.getAttribute('data-left'), 'px'].join('');
-      
-      console.log(width, height, top, left)
 
       self.image.style.width        = width;
       self.shadowImage.style.width  = width;
