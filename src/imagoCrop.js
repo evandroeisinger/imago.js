@@ -1,4 +1,6 @@
 !function(window, document) {
+  'use strict';
+  
   function Crop(editor) {
     var self = this;
 
