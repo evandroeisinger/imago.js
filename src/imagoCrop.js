@@ -1,18 +1,18 @@
 !function(window, document) {
   'use strict';
-  
+
   function Crop(editor) {
     var self = this;
 
-    self.crop     = {};
-    self.tmp      = {};
-    self.editor   = editor;
-    self.figure   = editor.elements.figure;
-    self.image    = editor.elements.image;
-    self.actions  = self.editor.elements.actions;
+    self.crop         = {};
+    self.tmp          = {};
+    self.editor       = editor;
+    self.figure       = editor.elements.figure;
+    self.image        = editor.elements.image;
+    self.actions      = self.editor.elements.actions;
+    self.pluginButton = document.createElement('button');
 
-    self.shadowImage        = self.image.cloneNode();
-    self.cropButton         = document.createElement('button');
+    self.shadowImage        = self.image.cloneNode();    
     self.cropMask           = document.createElement('div');
     self.cropWrapper        = document.createElement('div');
     self.cropActions        = document.createElement('div');
@@ -22,39 +22,38 @@
     self.moveHandler        = document.createElement('div');
     self.topLeftHandler     = document.createElement('span');
     self.bottomRightHandler = document.createElement('span');
+    
+    self.cropMask.className           = 'crop__mask';
+    self.cropWrapper.className        = 'crop__wrapper';
+    self.cropActions.className        = 'crop__actions';
+    self.pluginButton.className       = 'crop';
+    self.saveCropButton.className     = 'crop__actions__save';
+    self.cancelCropButton.className   = 'crop__actions__cancel';
+    self.cropHandlers.className       = 'crop__handlers';
+    self.moveHandler.className        = 'crop__handlers__move';
+    self.topLeftHandler.className     = 'crop__handlers__top-left';
+    self.bottomRightHandler.className = 'crop__handlers__bottom-right';
 
-    self.cropButton.innerText       = 'Crop';
+    self.pluginButton.innerText     = 'Crop';
     self.saveCropButton.innerText   = 'Save';
     self.cancelCropButton.innerText = 'Cancel';
-    
+
     this.applyCrop = function(e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       self
-        .insertElement(self.moveHandler, self.cropHandlers)
-        .insertElement(self.topLeftHandler, self.cropHandlers)
-        .insertElement(self.bottomRightHandler, self.cropHandlers)
         .insertElement(self.cropHandlers, self.figure)
         .insertElement(self.cropMask, self.figure)
-        .insertElement(self.saveCropButton, self.cropActions)
-        .insertElement(self.cancelCropButton, self.cropActions)
         .insertElement(self.cropActions, self.figure)
-        .insertElement(self.shadowImage, self.cropWrapper)
         .insertElement(self.cropWrapper, self.figure)
         .applyDimensions()
         .applyPositions();
 
       self.figure.className.replace(' figure--modified', '');
       self.figure.className += ' figure--cropping';
-
-      self.saveCropButton.addEventListener('click', self.saveCrop);
-      self.cancelCropButton.addEventListener('click', self.cancelCrop);
-      self.moveHandler.addEventListener('mousedown', self.applyDrag);
-      self.topLeftHandler.addEventListener('mousedown', self.applyResize);
-      self.bottomRightHandler.addEventListener('mousedown', self.applyResize);
     }
-
+    
     this.saveCrop = function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -116,8 +115,7 @@
       
       self
         .calculateCropping(e)
-        .applyPositions()
-        .applyDimensions();
+        .process([self.applyPositions, self.applyDimensions], 0);
     }
 
     this.stopResize = function(e) {
@@ -169,7 +167,7 @@
 
       self
         .calculateDragging(e)
-        .process(self.applyPositions);
+        .process(self.applyPositions, 25);
     }
 
     this.stopDrag = function (e) {
@@ -180,35 +178,44 @@
       document.removeEventListener('mousemove', self.drag);
     }
 
-    self.cropButton.className         += 'crop';
-    self.cropMask.className           += 'crop__mask';
-    self.cropWrapper.className        += 'crop__wrapper';
-    self.cropActions.className        += 'crop__actions';
-    self.saveCropButton.className     += 'crop__actions__save';
-    self.cancelCropButton.className   += 'crop__actions__cancel';
-    self.cropHandlers.className       += 'crop__handlers';
-    self.moveHandler.className        += 'crop__handlers__move';
-    self.topLeftHandler.className     += 'crop__handlers__top-left';
-    self.bottomRightHandler.className += 'crop__handlers__bottom-right';
+    self.pluginButton.addEventListener('click', self.applyCrop);
+    self.saveCropButton.addEventListener('click', self.saveCrop);
+    self.cancelCropButton.addEventListener('click', self.cancelCrop);
+    self.moveHandler.addEventListener('mousedown', self.applyDrag);
+    self.topLeftHandler.addEventListener('mousedown', self.applyResize);
+    self.bottomRightHandler.addEventListener('mousedown', self.applyResize);
 
     self
+      .insertElement(self.moveHandler, self.cropHandlers)
+      .insertElement(self.topLeftHandler, self.cropHandlers)
+      .insertElement(self.bottomRightHandler, self.cropHandlers)
+      .insertElement(self.saveCropButton, self.cropActions)
+      .insertElement(self.cancelCropButton, self.cropActions)
+      .insertElement(self.shadowImage, self.cropWrapper)
       .loadDataAttributes()
       .applyDataAttributes(self.figure)
       .applyDimensions()
       .applyPositions();
 
-    self.cropButton.addEventListener('click', self.applyCrop);
-    self.actions.appendChild(self.cropButton);
+    return self.pluginButton;
   }
 
   Crop.prototype = {
-    process: function(method) {
+
+    process: function(method, delay) {
       var self = this;
 
-      self.tmp.renderId = window.setTimeout(function(){
-        window.clearTimeout(self.tmp.renderId);
-        method.call(self);
-      }, 25);
+      self.tmp.processId = window.setTimeout(function(){
+        window.clearTimeout(self.tmp.processId);
+
+        if (method instanceof Array)
+          for (name in method)
+            method[name].call(self);
+        else
+          method.call(self);
+      }, delay);
+
+      return self;
     },
 
     insertElement: function(element, wrapper, before) {
@@ -224,12 +231,12 @@
 
     loadDataAttributes: function() {
       var self            = this,
-          originalWidth   = self.image.getAttribute('data-orig-width'),
-          originalHeight  = self.image.getAttribute('data-orig-height'),
-          width           = self.image.getAttribute('data-width'),
-          height          = self.image.getAttribute('data-height') ,
-          top             = self.image.getAttribute('data-top'),
-          left            = self.image.getAttribute('data-left');
+          originalWidth   = self.figure.getAttribute('data-orig-width'),
+          originalHeight  = self.figure.getAttribute('data-orig-height'),
+          width           = self.figure.getAttribute('data-width'),
+          height          = self.figure.getAttribute('data-height') ,
+          top             = self.figure.getAttribute('data-top'),
+          left            = self.figure.getAttribute('data-left');
 
       if (originalWidth && originalHeight && width && height && top && left)
         self.figure.className += ' figure--modified';
@@ -295,12 +302,12 @@
       var self = this,
           mouseX = e.pageX,
           mouseY = e.pageY,
-          minBottom,
-          minRight,
           width,
           height,
           left,
-          top;
+          top,
+          right,
+          bottom;
 
       switch(self.tmp.currentHandler) {
         case 'crop__handlers__top-left':
@@ -385,31 +392,32 @@
     },
 
     restoreCropping: function() {
-      var self    = this,
-          width   = [self.figure.getAttribute('data-width'), 'px'].join(''),
-          height  = [self.figure.getAttribute('data-height'), 'px'].join(''),
-          top     = [self.figure.getAttribute('data-top'), 'px'].join(''),
-          left    = [self.figure.getAttribute('data-left'), 'px'].join('');
+      var self    = this;
 
-      self.image.style.width        = width;
-      self.shadowImage.style.width  = width;
-      self.cropMask.style.width     = width;
-      self.cropHandlers.style.width = width;
+      self.crop.width  = [self.figure.getAttribute('data-width'), 'px'].join(''),
+      self.crop.height = [self.figure.getAttribute('data-height'), 'px'].join(''),
+      self.crop.top    = [self.figure.getAttribute('data-top'), 'px'].join(''),
+      self.crop.left   = [self.figure.getAttribute('data-left'), 'px'].join('');
 
-      self.image.style.height        = height;
-      self.shadowImage.style.height  = height;
-      self.cropMask.style.height     = height;
-      self.cropHandlers.style.height = height;
+      self.image.style.width        = self.crop.width;
+      self.shadowImage.style.width  = self.crop.width;
+      self.cropMask.style.width     = self.crop.width;
+      self.cropHandlers.style.width = self.crop.width;
+
+      self.image.style.height        = self.crop.height;
+      self.shadowImage.style.height  = self.crop.height;
+      self.cropMask.style.height     = self.crop.height;
+      self.cropHandlers.style.height = self.crop.height;
       
-      self.image.style.top        = top;
-      self.shadowImage.style.top  = top;
-      self.cropMask.style.top     = top;
-      self.cropHandlers.style.top = top;
+      self.image.style.top        = self.crop.top;
+      self.shadowImage.style.top  = self.crop.top;
+      self.cropMask.style.top     = self.crop.top;
+      self.cropHandlers.style.top = self.crop.top;
       
-      self.image.style.left        = left;
-      self.shadowImage.style.left  = left;
-      self.cropMask.style.left     = left;
-      self.cropHandlers.style.left = left;
+      self.image.style.left        = self.crop.left;
+      self.shadowImage.style.left  = self.crop.left;
+      self.cropMask.style.left     = self.crop.left;
+      self.cropHandlers.style.left = self.crop.left;
 
       return self;
     },
@@ -419,29 +427,14 @@
 
       self.figure.className = self.figure.className.replace(' figure--cropping','');
       self.figure.removeChild(self.cropMask);
-      self.cropWrapper.removeChild(self.shadowImage);
       self.figure.removeChild(self.cropWrapper);
-      self.cropActions.removeChild(self.saveCropButton);
-      self.cropActions.removeChild(self.cancelCropButton);
       self.figure.removeChild(self.cropActions);
-      self.cropHandlers.removeChild(self.topLeftHandler);
-      self.cropHandlers.removeChild(self.bottomRightHandler);
       self.figure.removeChild(self.cropHandlers);
-
-      self.saveCropButton.removeEventListener('click', self.saveCrop);
-      self.cancelCropButton.removeEventListener('click', self.cancelCrop);
-      self.moveHandler.removeEventListener('mousedown', self.applyDrag);
-      self.topLeftHandler.removeEventListener('mousedown', self.applyResize);
-      self.bottomRightHandler.removeEventListener('mousedown', self.applyResize);
 
       return self;
     }
   }
-
-  if (window.imagoPlugins)
-    return window.imagoPlugins.Crop = Crop;
-
-  window.imagoPlugins = {
-    crop: Crop
-  };
+  
+  return window.imagoPlugins ? 
+    window.imagoPlugins.push(Crop) : window.imagoPlugins = [Crop];
 }(window, document);
