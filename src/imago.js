@@ -1,4 +1,6 @@
 !function(plugins, document) {
+  'use strict';
+  
   window.Imago = function(image) {
     var self    = this,
         image   = image,
@@ -23,7 +25,7 @@
     };
 
     image.onload = function() {
-      for (plugin in plugins)
+      for (var plugin in plugins)
         self.plugins[plugin] = new plugins[plugin](self);
     }
   }
