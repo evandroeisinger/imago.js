@@ -200,21 +200,6 @@
   }
 
   Crop.prototype = {
-    export: function() {
-      var self = this,
-          image = document.createElement('img');
-
-      image.src = self.image.src;
-
-      self
-        .applyDataAttributes(image)
-        .insertElement(image, self.figure, true);
-
-      self.figure.parentNode.removeChild(self.figure);
-
-      return image;
-    },
-
     process: function(method) {
       var self = this;
 
