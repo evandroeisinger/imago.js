@@ -37,7 +37,6 @@
     };
 
     image.onload = function() {
-      console.log(plugins)
       for (var name in plugins)
         actions.appendChild(new plugins[name](self));
     }
