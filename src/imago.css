@@ -32,9 +32,10 @@
 	border-radius: 2px;
 	cursor: pointer;
 	font-weight: bold;
-	line-height: 20px;
+	line-height: 17px;
 	vertical-align: middle;
 	outline: none;
+	height: 20px;
 }
 
 .figure__actions button:hover {
