@@ -47,6 +47,7 @@
 	bottom: 0;
 	right: 0;
 	z-index: 40;
+	background: rgba(0,0,0,0);
 }
 
 .crop__handlers__move {
