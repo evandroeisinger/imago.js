@@ -1,4 +1,4 @@
-## [imago.js](evandroeisinger.github.io/imago.js/example)
+## imago.js
 
 > It's a wonderful image library! With the purpose to facilitate the manipulation of images, imago.js enables you to perform trimming and resizing.
 
