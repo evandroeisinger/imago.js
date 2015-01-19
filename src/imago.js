@@ -4,8 +4,8 @@
   window.Imago = function(image) {
     var self    = this,
         image   = image,
-        figure  = self.getParent(image, 'figure', 'figure'),
-        actions = self.getElement(figure, 'figure__actions', 'div');
+        figure  = self.getFigureFrom(image),
+        actions = self.getActionsFrom(image);
 
     if (!figure) {
       figure = document.createElement('figure');
@@ -43,20 +43,19 @@
   }
 
   Imago.prototype = {
-    getParent: function(element, className, nodeName) {
-      if (!element.parentElement || 
-          !element.parentElement.nodeName.toLowerCase() == nodeName ||
-          !element.parentElement.className.indexOf(className) <= 0)
-        return false;
+    getFigureFrom: function(element) {
+      var parent = element.parentElement;
+      if (parent && parent.nodeName.toLowerCase() == 'figure')
+        return parent;
 
-      return element.parentElement;
+      return false;
     },
 
-    getElement: function(wrapper, className, nodeName) {
-      if (wrapper.children) {
-        for (var i = 0; i < wrapper.children.length; i++) {
-          if ( wrapper.children[i].nodeName.toLowerCase() == nodeName &&  wrapper.children[i].className.indexOf(className) <= 0)
-            return  wrapper.children[i];  
+    getActionsFrom: function(element) {
+      if (element.children) {
+        for (var i = 0; i < element.children.length; i++) {
+          if ( element.children[i].nodeName.toLowerCase() == 'div' &&  element.children[i].className.indexOf('figure__actions') <= 0)
+            return  element.children[i];  
         }
       }
 
