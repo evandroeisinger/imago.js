@@ -1,8 +1,16 @@
 module.exports = function(config) {
   config.set({
     basePath: '../',
-    frameworks: ['jasmine'],
-    files: [{pattern: 'spec/fixtures/*.html', watched: false, included: false, served: true},'src/*.js', 'test/**/*.js'],
+    frameworks: ['jasmine-jquery', 'jasmine'],
+    files: [{
+        pattern: 'test/e2e/*.html',
+        watched: false,
+        included: false,
+        served: true
+    },
+    'src/*.js',
+    'test/**/*.js'
+    ],
     reporters: ['progress'],
     port: 9876,
     colors: true,
