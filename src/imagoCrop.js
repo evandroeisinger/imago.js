@@ -27,6 +27,7 @@
     self.cropActions        = document.createElement('div');
     self.saveCropButton     = document.createElement('button');
     self.cancelCropButton   = document.createElement('button');
+    self.resetCropButton   = document.createElement('button');
     self.cropHandlers       = document.createElement('div');
     self.moveHandler        = document.createElement('div');
     self.topLeftHandler     = document.createElement('span');
@@ -38,6 +39,7 @@
     self.pluginButton.className       = 'crop';
     self.saveCropButton.className     = 'crop__actions__save';
     self.cancelCropButton.className   = 'crop__actions__cancel';
+    self.resetCropButton.className    = 'crop__actions__reset';
     self.cropHandlers.className       = 'crop__handlers';
     self.moveHandler.className        = 'crop__handlers__move';
     self.topLeftHandler.className     = 'crop__handlers__top-left';
@@ -46,6 +48,7 @@
     self.pluginButton.innerText     = 'Crop';
     self.saveCropButton.innerText   = 'Save';
     self.cancelCropButton.innerText = 'Cancel';
+    self.resetCropButton.innerText  = 'Reset';
 
     this.applyCrop = function(e) {
       e.preventDefault();
@@ -72,6 +75,15 @@
 
       self
         .applyDataAttributes(self.figure)
+        .removeElements();
+    }
+
+    this.resetCrop = function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      self
+        .resetCropping()
         .removeElements();
     }
 
@@ -190,6 +202,7 @@
     self.pluginButton.addEventListener('click', self.applyCrop);
     self.saveCropButton.addEventListener('click', self.saveCrop);
     self.cancelCropButton.addEventListener('click', self.cancelCrop);
+    self.resetCropButton.addEventListener('click', self.resetCrop);
     self.moveHandler.addEventListener('mousedown', self.applyDrag);
     self.topLeftHandler.addEventListener('mousedown', self.applyResize);
     self.bottomRightHandler.addEventListener('mousedown', self.applyResize);
@@ -200,6 +213,7 @@
       .insertElement(self.bottomRightHandler, self.cropHandlers)
       .insertElement(self.saveCropButton, self.cropActions)
       .insertElement(self.cancelCropButton, self.cropActions)
+      .insertElement(self.resetCropButton, self.cropActions)
       .insertElement(self.shadowImage, self.cropWrapper)
       .loadDataAttributes()
       .applyDataAttributes(self.figure)
@@ -407,6 +421,37 @@
       self.crop.height = [self.figure.getAttribute('data-height'), 'px'].join(''),
       self.crop.top    = [self.figure.getAttribute('data-top'), 'px'].join(''),
       self.crop.left   = [self.figure.getAttribute('data-left'), 'px'].join('');
+
+      self.image.style.width        = self.crop.width;
+      self.shadowImage.style.width  = self.crop.width;
+      self.cropMask.style.width     = self.crop.width;
+      self.cropHandlers.style.width = self.crop.width;
+
+      self.image.style.height        = self.crop.height;
+      self.shadowImage.style.height  = self.crop.height;
+      self.cropMask.style.height     = self.crop.height;
+      self.cropHandlers.style.height = self.crop.height;
+      
+      self.image.style.top        = self.crop.top;
+      self.shadowImage.style.top  = self.crop.top;
+      self.cropMask.style.top     = self.crop.top;
+      self.cropHandlers.style.top = self.crop.top;
+      
+      self.image.style.left        = self.crop.left;
+      self.shadowImage.style.left  = self.crop.left;
+      self.cropMask.style.left     = self.crop.left;
+      self.cropHandlers.style.left = self.crop.left;
+
+      return self;
+    },
+
+    resetCropping: function() {
+      var self    = this;
+
+      self.crop.width  = [self.figure.getAttribute('data-orig-width'), 'px'].join(''),
+      self.crop.height = [self.figure.getAttribute('data-orig-height'), 'px'].join(''),
+      self.crop.top    = [0, 'px'].join(''),
+      self.crop.left   = [0, 'px'].join('');
 
       self.image.style.width        = self.crop.width;
       self.shadowImage.style.width  = self.crop.width;
