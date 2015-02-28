@@ -1,11 +1,25 @@
-!function(plugins, document) {
+(function (global, Imago) {
   'use strict';
 
-  window.Imago = function(image) {
-    var self    = this,
-        image   = image,
-        figure  = self.getFigureFrom(image),
-        actions = self.getActionsFrom(image);
+  if (typeof define === 'function' && define.amd)
+    define('imago-js', [], Imago);
+  else if (typeof exports !== 'undefined')
+    exports.Imago = Imago();
+  else
+    global.Imago = Imago();
+}(window, function() {
+  'use strict';
+
+  function Imago(image, plugins) {
+    var self = this,
+        figure,
+        actions;
+
+    if (!image || !image.nodeName.toLowerCase() == 'img')
+      return new Error('No image was passed!');
+
+    figure = self.getFigureFrom(image);
+    actions = self.getActionsFrom(image);
 
     if (!figure) {
       figure = document.createElement('figure');
@@ -37,8 +51,8 @@
     };
 
     image.onload = function() {
-      for (var name in plugins)
-        actions.appendChild(new plugins[name](self));
+      for (var plugin in plugins)
+        actions.appendChild(new plugins[plugin](self));
     }
   }
 
@@ -62,4 +76,6 @@
       return false;
     }
   }
-}(window.imagoPlugins, document);
+
+  return Imago;
+}));

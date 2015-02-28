@@ -1,7 +1,16 @@
-!function(window, document) {
+(function (global, ImagoCrop) {
   'use strict';
 
-  function Crop(editor) {
+  if (typeof define === 'function' && define.amd)
+    define('imago-crop-js', [], ImagoCrop);
+  else if (typeof exports !== 'undefined')
+    exports.ImagoCrop = ImagoCrop();
+  else
+    global.ImagoCrop = ImagoCrop();
+}(window, function() {
+  'use strict';
+
+  function ImagoCrop(editor) {
     var self = this;
 
     self.crop         = {};
@@ -200,7 +209,7 @@
     return self.pluginButton;
   }
 
-  Crop.prototype = {
+  ImagoCrop.prototype = {
 
     process: function(method, delay) {
       var self = this;
@@ -432,9 +441,8 @@
       self.figure.removeChild(self.cropHandlers);
 
       return self;
-    }
+    }  
   }
-  
-  return window.imagoPlugins ? 
-    window.imagoPlugins.push(Crop) : window.imagoPlugins = [Crop];
-}(window, document);
+
+  return ImagoCrop;
+}));
