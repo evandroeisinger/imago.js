@@ -2,62 +2,14 @@
 <html>
 <head>
   <title>imago.js</title>
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,800' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="../src/imago.css">
-  <link rel="stylesheet" type="text/css" href="../src/imagoCrop.css">
-  <style type="text/css">
-    h1, p { 
-      font-family: 'Open Sans', sans-serif; 
-    }
-
-    h1 { 
-      font-size: 36px;
-      font-weight: 800;
-    }
-
-    p { 
-      font-size: 16px;
-      font-weight: 400;
-      text-align: justify;
-      line-height: 2em;
-      margin: 1em 0;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    article {
-      width: 640px;
-      padding: 0;
-      margin: 0 auto;
-    }
-
-    img {
-      width: 100%;
-    }
-  </style>
+  <style type="text/css"></style>
 </head>
 <body>
   <article>
     <h1>imago.js</h1>
-    <img src="http://farm6.staticflickr.com/5539/11186937945_4d288cc8fa_o_d.jpg" alt="Davide Gabino">
-    <p>Quisque placerat bibendum nisi, sit amet facilisis nibh. Sed at velit lorem. Aenean faucibus, ipsum id gravida sagittis, nisi mauris bibendum velit, ac laoreet nibh nisi vel justo. Maecenas consectetur ultrices turpis at sodales. Fusce tincidunt molestie justo id accumsan. Quisque suscipit ipsum in turpis scelerisque tempus. Mauris ut lectus vel nulla scelerisque suscipit. Proin sapien ligula, luctus quis enim et, commodo volutpat felis.</p>
-    <figure class="figure figure--modified" data-orig-width="640" data-orig-height="427" data-width="985" data-height="657" data-top="0" data-left="0" style="width: 640px; height: 427px;"><img src="http://farm9.staticflickr.com/8246/8662153499_08938cb34d_b_d.jpg" alt="Davide Gabino" class="figure__image" style="width: 985px; height: 657px; top: 0px; left: 0px;"><div class="figure__actions"><button class="crop">Crop</button></div></figure>
-    <p>Suspendisse pretium est purus, sed pretium felis imperdiet ac. Curabitur at gravida urna, a venenatis risus. Pellentesque a scelerisque risus. Donec congue nisi at nunc dictum ullamcorper. Nam quam tortor, mollis sed tellus id, lacinia volutpat dolor. Aenean odio lectus, tristique vel cursus in, aliquet eu neque. Ut enim risus, ultricies et dictum quis, condimentum sit amet justo. Curabitur nunc leo, pulvinar nec convallis at, consequat in libero. Phasellus malesuada eu massa et varius.</p>
   </article>
 
-  <script type="text/javascript" src="../src/imagoCrop.js"></script>
   <script type="text/javascript" src="../src/imago.js"></script>
-  <script type="text/javascript">
-    (function(document) {
-      var images = document.getElementsByTagName('img'),
-          imagos = [];
-
-      for (var i = 0; i < images.length; i++)
-        imagos.push(new Imago(images[i], [ImagoCrop]));
-    })(document);
-  </script>
+  <script type="text/javascript"></script>
 </body>
 </html>
