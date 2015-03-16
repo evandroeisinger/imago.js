@@ -1,12 +1,12 @@
-(function (global, constructor) {
+(function (global, Imago) {
   'use strict';
 
   if (typeof define === 'function' && define.amd)
-    define('imago-js', [], constructor);
+    define('imago-js', [], Imago);
   else if (typeof exports !== 'undefined')
-    exports.Imago = constructor();
+    exports.Imago = Imago();
   else
-    global.Imago = constructor();
+    global.Imago = Imago();
 }(window, function() {
   'use strict';
 
