@@ -2,11 +2,11 @@
   'use strict';
 
   if (typeof define === 'function' && define.amd)
-    define('imago-js', [], Imago);
+    define('imago-js', [], new Imago());
   else if (typeof exports !== 'undefined')
-    exports.Imago = Imago();
+    exports.Imago = new Imago();
   else
-    global.Imago = Imago();
+    global.Imago = new Imago();
 }(window, function() {
   'use strict';
 
@@ -25,6 +25,8 @@
     function _reset() {
     }
 
+    self.elements = self.generateElements(image);
+
     return {
       save: _save,
       edit: _edit,
@@ -33,7 +35,12 @@
     };
   }
 
-  Imago.prototype = {};
+  Imago.prototype = {
+    generateElements: function(image) {
+      if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
+        throw new TypeError('Invalid image: ' + image);
+    }
+  };
 
   return Imago;
 }));
