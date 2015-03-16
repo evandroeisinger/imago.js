@@ -1,6 +1,6 @@
 {
   "name": "imago",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Evandro Eisinger <evandroeisinger@gmail.com>",
   "repository": {
     "type": "git",
@@ -16,5 +16,13 @@
     "karma-jasmine": "^0.3.5",
     "karma-jasmine-jquery": "^0.1.1",
     "karma-phantomjs-launcher": "^0.1.4"
-  }
+  },
+  "keywords": [
+    "image",
+    "images",
+    "edition",
+    "crop",
+    "resizing",
+    "manipulation"
+  ]
 }
