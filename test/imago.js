@@ -1,9 +1,7 @@
 describe('imago.js', function(argument) {
-  var image;
-  
   beforeEach(function() {
-    image = new Image();
-    image.src = 'http://www.bealecorner.com/trv900/respat/eia1956-small.jpg';
+    jasmine.getFixtures().fixturesPath = '../../base/test';
+    loadFixtures('fixtures.html');
   });
 
   it('must exist in the global context', function() {
