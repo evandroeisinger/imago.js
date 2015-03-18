@@ -1,4 +1,4 @@
-(function (global, Imago) {
+(function (Imago) {
   'use strict';
 
   if (typeof define === 'function' && define.amd)
@@ -6,8 +6,8 @@
   else if (typeof exports !== 'undefined')
     exports.Imago = new Imago();
   else
-    global.Imago = new Imago();
-}(window, function() {
+    window.Imago = new Imago();
+}(function() {
   'use strict';
 
   function Imago(image) {
@@ -25,7 +25,13 @@
     function _reset() {
     }
 
-    self.elements = self.generateElements(image);
+    if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
+      throw new TypeError('Invalid image: ' + image);
+
+    image.onload = function() {
+      self.elements = self.getElements(image);
+      self.setElements(self.elements);
+    };
 
     return {
       save: _save,
@@ -36,9 +42,29 @@
   }
 
   Imago.prototype = {
-    generateElements: function(image) {
-      if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
-        throw new TypeError('Invalid image: ' + image);
+    getElements: function(image) {
+      var _image = image,
+          _figure;
+
+      if (_image.parentElement && _image.parentElement.nodeName.toLowerCase() == 'figure')
+        _figure = _image.parentElement;
+      else
+        _figure = document.createElement('figure');
+
+      return {
+        image: _image,
+        figure: _figure
+      };
+    },
+
+    setElements: function(elements) {
+      var _image = elements.image,
+          _figure = elements.figure;
+          
+      if (!_figure.parentElement)
+        _image.parentElement.insertBefore(_figure, _image);
+
+      _figure.appendChild(_image);
     }
   };
 
