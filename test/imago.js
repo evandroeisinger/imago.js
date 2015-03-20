@@ -21,4 +21,23 @@ describe('imago.js', function(argument) {
     expect(imago.undo).toBeDefined();
     expect(imago.reset).toBeDefined();
   });
+
+  describe('initialize imago elements', function() {
+    beforeEach(function(done) {
+      done();
+    }, 1000);
+
+    it('wrap image with a figure', function(done) {
+      expect(image.parentElement.id).toEqual('jasmine-fixtures');
+      new Imago(image);    
+      setTimeout(function() {
+        expect(image.parentElement.nodeName.toLowerCase()).toEqual('figure');
+        done();
+      }, 500);
+    }, 1000);
+
+    afterEach(function(done) {
+      done();
+    }, 1000);
+  });
 });
