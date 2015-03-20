@@ -46,11 +46,11 @@ describe('imago.js', function(argument) {
     }, 1000);
 
     it('use image parent figure', function(done) {
-      expect(image.parentElement).toEqual(figureWithImage);
+      expect(imageWithFigure.parentElement).toEqual(figureWithImage);
       new Imago(imageWithFigure);
 
       setTimeout(function() {
-        expect(image.parentElement).toEqual(figureWithImage);
+        expect(imageWithFigure.parentElement).toEqual(figureWithImage);
         done();
       }, 500);
     }, 1000);
