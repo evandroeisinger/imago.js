@@ -1,7 +1,15 @@
+var image,
+    imageWithFigure,
+    figureWithImage;
+
 describe('imago.js', function(argument) {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = '../../base/test';
     loadFixtures('fixtures.html');
+
+    image = document.getElementById('image');
+    imageWithFigure = document.getElementById('imageWithFigure');
+    figureWithImage = document.getElementById('figureWithImage');
   });
 
   it('must exist in the global context', function() {
@@ -30,8 +38,19 @@ describe('imago.js', function(argument) {
     it('wrap image with a figure', function(done) {
       expect(image.parentElement.id).toEqual('jasmine-fixtures');
       new Imago(image);    
+      
       setTimeout(function() {
         expect(image.parentElement.nodeName.toLowerCase()).toEqual('figure');
+        done();
+      }, 500);
+    }, 1000);
+
+    it('use image parent figure', function(done) {
+      expect(image.parentElement).toEqual(figureWithImage);
+      new Imago(imageWithFigure);
+
+      setTimeout(function() {
+        expect(image.parentElement).toEqual(figureWithImage);
         done();
       }, 500);
     }, 1000);
