@@ -2,7 +2,9 @@ module.exports = function(karma) {
   var config = {
     basePath: '../',
     frameworks: ['jasmine-jquery', 'jasmine'],
-    files: ['src/imago.js', 'test/imago.js', 'test/fixtures.html'],
+    files: ['src/imago.js', 'test/imago.js', 'test/fixtures.html', {
+      pattern: 'test/image.jpg', included: false
+    }],
     reporters: ['progress'],
     port: 9876,
     colors: true,
