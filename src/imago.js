@@ -1,81 +1,72 @@
-(function (global, Imago) {
+(function (Imago) {
   'use strict';
 
   if (typeof define === 'function' && define.amd)
-    define('imago-js', [], Imago);
+    define('imago-js', [], new Imago());
   else if (typeof exports !== 'undefined')
-    exports.Imago = Imago();
+    exports.Imago = new Imago();
   else
-    global.Imago = Imago();
-}(window, function() {
+    window.Imago = new Imago();
+}(function() {
   'use strict';
 
-  function Imago(image, plugins) {
-    var self = this,
-        figure,
-        actions;
+  function Imago(image) {
+    var self = this;
 
-    if (!image || !image.nodeName.toLowerCase() == 'img')
-      return new Error('No image was passed!');
-
-    figure = self.getFigureFrom(image);
-    actions = self.getActionsFrom(image);
-
-    if (!figure) {
-      figure = document.createElement('figure');
-      figure.className += 'figure';
-      image.parentElement.insertBefore(figure, image);
-      figure.appendChild(image);
+    function _save() {
     }
 
-    if (!actions) {
-      actions = document.createElement('div'),
-      actions.className = 'figure__actions';
-      figure.appendChild(actions);
-    }
-    
-    if (!image.className.indexOf('figure__image') <= 0)
-      image.className = 'figure__image';
-
-    if (image.style.cssText.length)
-      image.style.cssText = "";
-    
-    while (actions.firstChild) {
-      actions.removeChild(actions.firstChild);
+    function _edit() {
     }
 
-    self.elements = {
-      image: image,
-      figure: figure,
-      actions: actions
-    };
+    function _undo() {
+    }
+
+    function _reset() {
+    }
+
+    if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
+      throw new TypeError('Invalid image: ' + image);
 
     image.onload = function() {
-      for (var plugin in plugins)
-        actions.appendChild(new plugins[plugin](self));
-    }
+      self.elements = self.getElements(image);
+      self.setElements(self.elements);
+    };
+
+    return {
+      save: _save,
+      edit: _edit,
+      undo: _undo,
+      reset: _reset
+    };
   }
 
   Imago.prototype = {
-    getFigureFrom: function(element) {
-      var parent = element.parentElement;
-      if (parent && parent.nodeName.toLowerCase() == 'figure')
-        return parent;
+    getElements: function(image) {
+      var _image = image,
+          _figure;
 
-      return false;
+      if (_image.parentElement && _image.parentElement.nodeName.toLowerCase() == 'figure')
+        _figure = _image.parentElement;
+      else
+        _figure = document.createElement('figure');
+
+      return {
+        image: _image,
+        figure: _figure
+      };
     },
 
-    getActionsFrom: function(element) {
-      if (element.children) {
-        for (var i = 0; i < element.children.length; i++) {
-          if ( element.children[i].nodeName.toLowerCase() == 'div' &&  element.children[i].className.indexOf('figure__actions') <= 0)
-            return  element.children[i];  
-        }
-      }
+    setElements: function(elements) {
+      var _image = elements.image,
+          _figure = elements.figure;
+          
+      if (!_figure.parentElement)
+        _image.parentElement.insertBefore(_figure, _image);
 
-      return false;
+      _figure.appendChild(_image);
     }
-  }
+  };
 
   return Imago;
 }));

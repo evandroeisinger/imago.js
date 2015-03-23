@@ -1,6 +1,6 @@
 {
   "name": "imago",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Evandro Eisinger <evandroeisinger@gmail.com>",
   "main": "src/imago.js",
   "repository": {
@@ -8,14 +8,24 @@
     "url": "https://github.com/evandroeisinger/imago.js"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start test/config.js"
+    "hint": "./node_modules/jshint/bin/jshint src/imago.js; ./node_modules/jshint/bin/jshint test/imago.js",
+    "test": "npm run hint; ./node_modules/karma/bin/karma start test/config.js"
   },
   "license": "MIT",
   "devDependencies": {
-    "jasmine-core": "^2.1.3",
+    "jshint": "^2.6.0",
     "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
     "karma-jasmine": "^0.3.5",
     "karma-jasmine-jquery": "^0.1.1",
-    "karma-phantomjs-launcher": "^0.1.4"
-  }
+    "jasmine-core": "^2.1.3"
+  },
+  "keywords": [
+    "image",
+    "images",
+    "edition",
+    "crop",
+    "resizing",
+    "manipulation"
+  ]
 }
