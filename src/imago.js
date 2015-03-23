@@ -13,12 +13,12 @@
   function Imago(image) {
     var self = this;
 
-    function init() {
+    function _fetch() {
       self.tmp = {};
       self.elements = self.loadElements(image);
       self.data = self.loadData(self.elements);
-      console.log(self.elements);
-      self.applyElements(self.elements);
+      
+      self.initialize(self.elements);
     }
 
     function _save() {
@@ -37,9 +37,9 @@
       throw new TypeError('Invalid image: ' + image);
 
     if (!image.complete)
-      image.onload = init;
+      image.onload = _fetch;
     else
-      init();
+      _fetch();
 
     return {
       save: _save,
@@ -122,16 +122,6 @@
       };
     },
     
-    applyElements: function(elements) {
-      var _image = elements.image,
-          _figure = elements.figure;
-
-      if (!_figure.parentElement)
-        _image.parentElement.insertBefore(_figure, _image);
-
-      _figure.appendChild(_image);
-    },
-
     loadData: function(elements) {
       var _image = elements.image,
           _origWidth = _image.getAttribute('data-orig-width') * 1,
@@ -151,6 +141,31 @@
       }
     },
 
+    initialize: function(elements) {
+      var _image = elements.image,
+          _figure = elements.figure,
+          _shadow = elements.shadow,
+          _mask = elements.mask,
+          _wrapper = elements.wrapper,
+          _handlers = elements.handlers;
+    
+      if (!_figure.parentElement)
+        _image.parentElement.insertBefore(_figure, _image);
+
+      _figure.appendChild(_image);
+      
+      if (_shadow.parentElement)
+        _figure.removeChild(_shadow);
+
+      if (_mask.parentElement)
+        _figure.removeChild(_mask);
+        
+      if (_wrapper.parentElement)
+        _figure.removeChild(_wrapper);
+
+      if (_handlers.parentElement)
+        _figure.removeChild(_handlers);
+    },
   };
 
   return Imago;
