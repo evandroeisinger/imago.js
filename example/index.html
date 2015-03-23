@@ -2,14 +2,82 @@
 <html>
 <head>
   <title>imago.js</title>
-  <style type="text/css"></style>
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    article {
+      width: 100%;
+      max-width: 65%;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    button {
+      font-size: 1em;
+      border: black solid 1px;
+      border-radius: .25rem;
+      background: transparent;
+      cursor: pointer;
+      color: black;
+      margin-right: 0.5rem;
+      line-height: 1.5rem;
+    }
+
+    button:hover {
+      color: white;
+      background: black;
+    }
+
+    .actions {
+      margin: 1em 0;
+    }
+  </style>
 </head>
 <body>
   <article>
     <h1>imago.js</h1>
+    <div class="actions">
+      <button id="save" onclick="save()">save</button>
+      <button id="edit" onclick="edit()">edit</button>
+      <button id="undo" onclick="undo()">undo</button>
+      <button id="reset" onclick="reset()">reset</button>
+    </div>
+    <img id="image" src="../test/image.jpg" alt="Davide Gabino">
   </article>
 
   <script type="text/javascript" src="../src/imago.js"></script>
-  <script type="text/javascript"></script>
+  <script type="text/javascript">
+    var image = document.getElementById('image'),
+        editor = new Imago(image);
+
+    function save() {
+      console.log('save');
+    }
+
+    function edit() {
+      console.log('edit');
+    }
+
+    function undo() {
+      console.log('undo');
+    }
+
+    function reset() {
+      console.log('reset');
+    }
+  </script>
 </body>
 </html>
