@@ -15,8 +15,12 @@
 
     function _fetch() {
       self.tmp = {};
+      self.data = self.loadAttributes(image);
       self.elements = self.loadElements(image);
-      self.data = self.loadData(self.elements);
+      
+      self.applyDimensions(self.data, self.elements);
+      self.applyPositions(self.data, self.elements);
+      self.applyAttributes(self.data, self.elements);
       self.initialize(self.elements);
     }
 
@@ -59,7 +63,7 @@
           _moveHandler,
           _topLeftHandler,
           _bottomRightHandler;
-    
+      
       if (_image.parentElement && _image.parentElement.nodeName.toLowerCase() == 'figure') 
         _figure = _image.parentElement;
       else
@@ -146,23 +150,59 @@
       };
     },
     
-    loadData: function(elements) {
-      var _image = elements.image,
-          _origWidth = _image.getAttribute('data-orig-width') * 1,
-          _origHeight = _image.getAttribute('data-orig-height') * 1,
-          _width = _image.getAttribute('data-width') * 1,
-          _height = _image.getAttribute('data-height') * 1,
-          _top = _image.getAttribute('data-top') * 1,
-          _left = _image.getAttribute('data-left') * 1;
+    loadAttributes: function(image) {
+      var _originalWidth = image.getAttribute('data-original-width') * 1,
+          _originalHeight = image.getAttribute('data-original-height') * 1,
+          _width = image.getAttribute('data-width') * 1,
+          _height = image.getAttribute('data-height') * 1,
+          _top = image.getAttribute('data-top') * 1,
+          _left = image.getAttribute('data-left') * 1;
 
       return {
-        origWidth: _origWidth || _image.clientWidth,
-        origHeight: _origHeight || _image.clientHeight,
-        width: _width || _image.clientWidth,
-        height: _height || _image.clientHeight,
+        originalWidth: _originalWidth || image.clientWidth,
+        originalHeight: _originalHeight || image.clientHeight,
+        width: _width || image.clientWidth,
+        height: _height || image.clientHeight,
         top: _top || 0,
         left: _left || 0,
       }
+    },
+
+    applyAttributes: function(data, elements) {
+      elements.image.setAttribute('data-original-width', data.originalWidth);
+      elements.image.setAttribute('data-original-height', data.originalHeight);
+      elements.image.setAttribute('data-width', data.width);
+      elements.image.setAttribute('data-height', data.height);
+      elements.image.setAttribute('data-top', data.top);
+      elements.image.setAttribute('data-left', data.left);
+    },
+
+    applyDimensions: function(data, elements) {
+      // left
+      elements.figure.style.width = data.originalWidth + 'px';
+      elements.image.style.width = data.width + 'px';
+      elements.shadow.style.width = data.width + 'px';
+      elements.mask.style.width = data.width + 'px';
+      elements.handlers.style.width = data.width + 'px';
+      // height
+      elements.figure.style.height = data.originalHeight + 'px';
+      elements.image.style.height = data.height + 'px';
+      elements.shadow.style.height = data.height + 'px';
+      elements.mask.style.height = data.height + 'px';
+      elements.handlers.style.height = data.height + 'px';
+    },
+
+    applyPositions: function(data, elements) {
+      // left
+      elements.image.style.top = data.top + 'px';
+      elements.shadow.style.top = data.top, 'px';
+      elements.mask.style.top = data.top, 'px';
+      elements.handlers.style.top = data.top, 'px';
+      // right
+      elements.image.style.left = data.left, 'px';
+      elements.shadow.style.left = data.left, 'px';
+      elements.mask.style.left = data.left, 'px';
+      elements.handlers.style.left = data.left, 'px';
     },
 
     initialize: function(elements) {
