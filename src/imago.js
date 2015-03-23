@@ -17,7 +17,6 @@
       self.tmp = {};
       self.elements = self.loadElements(image);
       self.data = self.loadData(self.elements);
-      
       self.initialize(self.elements);
     }
 
@@ -78,6 +77,8 @@
         _shadow = _image.cloneNode();
         _shadow.className = 'crop__shadow';
       }
+
+      _shadow.removeAttribute('id');
       
       if (!_mask) {
         _mask = document.createElement('div');
@@ -108,6 +109,29 @@
         _bottomRightHandler = document.createElement('span');
         _bottomRightHandler.className = 'crop__bottom-right-handler';
       }
+
+      _figure.style.overflow = 'hidden';
+      _wrapper.style.overflow = 'hidden';
+      
+      _image.style.zIndex = '0';
+      _mask.style.zIndex = '10';
+      _wrapper.style.zIndex = '20';
+      _handlers.style.zIndex = '30';    
+
+      _figure.style.position = 'relative';
+      _image.style.position = 'absolute';  
+      _mask.style.position = 'absolute';
+      _wrapper.style.position = 'absolute';
+      _handlers.style.position = 'absolute';
+      _shadow.style.position = 'absolute';
+      _moveHandler.style.position = 'absolute';
+      _topLeftHandler.style.position = 'absolute';
+      _bottomRightHandler.style.position = 'absolute';
+
+      _handlers.appendChild(_moveHandler);
+      _handlers.appendChild(_topLeftHandler);
+      _handlers.appendChild(_bottomRightHandler);
+      _wrapper.appendChild(_shadow);
 
       return {
         image: _image,
@@ -151,11 +175,8 @@
     
       if (!_figure.parentElement)
         _image.parentElement.insertBefore(_figure, _image);
-
-      _figure.appendChild(_image);
       
-      if (_shadow.parentElement)
-        _figure.removeChild(_shadow);
+      _figure.appendChild(_image);
 
       if (_mask.parentElement)
         _figure.removeChild(_mask);
