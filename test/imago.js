@@ -80,7 +80,6 @@ describe('imago.js', function(argument) {
     }, 1000);
 
     it('load image data attributes', function(done) {
-      console.log(imageWithAttributes);
       expect(imageWithAttributes).toHaveAttr('data-original-width', '640');
       expect(imageWithAttributes).toHaveAttr('data-original-height', '424');
       expect(imageWithAttributes).toHaveAttr('data-width', '640');
