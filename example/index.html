@@ -18,12 +18,11 @@
 
   <script type="text/javascript" src="../src/imago.js"></script>
   <script type="text/javascript">
-    var image = document.getElementById('image'),
-        editButton = document.getElementById('editButton'),
+    var editButton = document.getElementById('editButton'),
         saveButton = document.getElementById('saveButton'),
         undoButton = document.getElementById('undoButton'),
         resetButton = document.getElementById('resetButton'),
-        editor = new Imago(image);
+        image = new Imago(document.getElementById('image'));
 
     function enableEdition() {
       editButton.setAttribute('disabled', true);
@@ -41,18 +40,22 @@
     
     function edit() {
       enableEdition();
+      image.edit();
     }
 
     function save() {
       disableEdition();
+      image.save();
     }
 
     function undo() {
       disableEdition();
+      image.undo();
     }
 
     function reset() {
       disableEdition();
+      image.reset();
     }
   </script>
 </body>

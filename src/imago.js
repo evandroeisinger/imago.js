@@ -24,16 +24,20 @@
       self.initialize(self.elements);
     }
 
-    function _save() {
+    function _edit() {
+      self.showElements(self.elements);
     }
 
-    function _edit() {
+    function _save() {
+      self.hideElements(self.elements);
     }
 
     function _undo() {
+      self.hideElements(self.elements);
     }
 
     function _reset() {
+      self.hideElements(self.elements);
     }
 
     if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
@@ -53,6 +57,32 @@
   }
 
   Imago.prototype = {
+    showElements: function(elements) {
+      var _figure = elements.figure,
+          _mask = elements.mask,
+          _wrapper = elements.wrapper,
+          _handlers = elements.handlers;
+
+      _figure.style.overflow = 'inherit';
+    
+      _figure.appendChild(_mask);
+      _figure.appendChild(_wrapper);
+      _figure.appendChild(_handlers);
+    },
+
+    hideElements: function(elements) {
+      var _figure = elements.figure,
+          _mask = elements.mask,
+          _wrapper = elements.wrapper,
+          _handlers = elements.handlers;
+
+      _figure.style.overflow = 'hidden';
+    
+      _figure.removeChild(_mask);
+      _figure.removeChild(_wrapper);
+      _figure.removeChild(_handlers);
+    },
+
     loadElements: function(image) {
       var _image = image,
           _figure,
@@ -77,13 +107,7 @@
       _topLeftHandler = _figure.getElementsByClassName('crop__top-left-handler')[0];
       _bottomRightHandler = _figure.getElementsByClassName('crop__bottom-right-handler')[0];
 
-      if (!_shadow) {
-        _shadow = _image.cloneNode();
-        _shadow.className = 'crop__shadow';
-      }
 
-      _shadow.removeAttribute('id');
-      
       if (!_mask) {
         _mask = document.createElement('div');
         _mask.className = 'crop__mask';
@@ -114,20 +138,31 @@
         _bottomRightHandler.className = 'crop__bottom-right-handler';
       }
 
-      _figure.style.overflow = 'hidden';
-      _wrapper.style.overflow = 'hidden';
-      
-      _image.style.zIndex = '0';
-      _mask.style.zIndex = '10';
-      _wrapper.style.zIndex = '20';
-      _handlers.style.zIndex = '30';    
-
-      _figure.style.position = 'relative';
-      _image.style.position = 'absolute';  
-      _mask.style.position = 'absolute';
-      _wrapper.style.position = 'absolute';
-      _handlers.style.position = 'absolute';
+      _shadow = _shadow || _image.cloneNode();
+      _shadow.className = 'crop__shadow';
+      _shadow.removeAttribute('id');
       _shadow.style.position = 'absolute';
+
+      _figure.style.overflow = 'hidden';
+      _figure.style.position = 'relative';
+      
+      _mask.style.position = 'absolute';
+      _mask.style.zIndex = '10';
+      
+      _handlers.style.position = 'absolute';
+      _handlers.style.zIndex = '30';
+
+      _wrapper.style.position = 'absolute';
+      _wrapper.style.overflow = 'hidden';
+      _wrapper.style.top = '0';
+      _wrapper.style.left = '0';
+      _wrapper.style.right = '0';
+      _wrapper.style.bottom = '0';
+      _wrapper.style.zIndex = '20';
+
+      _image.style.position = 'absolute';  
+      _image.style.zIndex = '0';
+
       _moveHandler.style.position = 'absolute';
       _topLeftHandler.style.position = 'absolute';
       _bottomRightHandler.style.position = 'absolute';
