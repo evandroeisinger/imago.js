@@ -25,6 +25,61 @@
       self.applyElements(self.elements);
     }
 
+    function startDragging(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (e.which !== 1)
+        return;
+
+      var figurePosition = self.getElementPosition(self.elements.figure),
+          imagePosition = self.getElementPosition(self.elements.image);
+
+      self.tmp = {
+        handler: e.currentTarget.className,
+        
+        image: {
+          top: imagePosition.top,
+          left: imagePosition.left,
+          width: self.elements.image.clientWidth,
+          height: self.elements.image.clientHeight,
+        },
+
+        figure: {
+          top: figurePosition.top,
+          left: figurePosition.left,
+          width: self.elements.figure.clientWidth,
+          height: self.elements.figure.clientHeight,
+        },
+
+        mouse: {
+          x: e.pageX,
+          y: e.pageY, 
+        }
+      };
+      
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('mouseup', stopDragging);
+    }
+
+    function drag(e) {
+      e.preventDefault();
+
+      var draggingData = self.calculateDragging(self.data, self.tmp, {
+        x: e.pageX,
+        y: e.pageY,
+      });
+
+      self.applyPositions(draggingData, self.elements);
+      self.applyDimensions(draggingData, self.elements);
+    }
+
+    function stopDragging(e) {
+      e.preventDefault();
+      document.removeEventListener('mousemove', drag);
+      document.removeEventListener('mouseup', stopDragging);
+    }
+
     function startCropping(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -71,7 +126,6 @@
 
     function stopCropping(e) {
       e.preventDefault();
-
       document.removeEventListener('mousemove', crop);
       document.removeEventListener('mouseup', stopCropping);
     }
@@ -86,6 +140,7 @@
 
     return {
       edit: function() {
+        self.elements.moveHandler.addEventListener('mousedown', startDragging);
         self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
         self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
         
@@ -185,6 +240,27 @@
         height: Math.round(_height),
         right: Math.round(_right),
         bottom: Math.round(_bottom),
+      };
+    },
+
+    calculateDragging: function(data, tmp, mouse) {
+      var _left = (mouse.x - tmp.figure.left) - (tmp.mouse.x - tmp.image.left),
+          _top = (mouse.y - tmp.figure.top) - (tmp.mouse.y - tmp.image.top) ,
+          diffLeft = ((tmp.figure.left - (_left * -1)) + tmp.image.width) - (tmp.figure.left + tmp.figure.width),
+          diffTop = ((tmp.figure.top - (_top * -1)) + tmp.image.height) - (tmp.figure.top + tmp.figure.height);
+
+      if (_left > 0)
+        _left = 0;
+      if (_top > 0)
+        _top = 0;
+      if (diffLeft < 0)
+        _left = (tmp.image.width - tmp.figure.width) * -1;
+      if (diffTop < 0)
+        _top = (tmp.image.height - tmp.figure.height) * -1;
+
+      return {
+        top: Math.round(_top),
+        left: Math.round(_left),
       };
     },
 
