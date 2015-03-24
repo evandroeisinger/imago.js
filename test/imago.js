@@ -5,8 +5,9 @@ var image,
 describe('imago.js', function(argument) {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = '../../base/test';
-    loadFixtures('fixtures.html');
-
+    loadFixtures('fixture.css');
+    loadFixtures('fixture.html');
+    
     image = document.getElementById('image');
     imageWithFigure = document.getElementById('imageWithFigure');
     figureWithImage = document.getElementById('figureWithImage');
@@ -51,6 +52,27 @@ describe('imago.js', function(argument) {
 
       setTimeout(function() {
         expect(imageWithFigure.parentElement).toEqual(figureWithImage);
+        done();
+      }, 500);
+    }, 1000);
+
+    it('apply image data attributes', function(done) {
+      expect(image).not.toHaveAttr('data-original-width');
+      expect(image).not.toHaveAttr('data-original-height');
+      expect(image).not.toHaveAttr('data-width');
+      expect(image).not.toHaveAttr('data-height');
+      expect(image).not.toHaveAttr('data-top');
+      expect(image).not.toHaveAttr('data-left');
+      
+      new Imago(image);
+
+      setTimeout(function() {
+        expect(image).toHaveAttr('data-original-width', '1050');
+        expect(image).toHaveAttr('data-original-height', '697');
+        expect(image).toHaveAttr('data-width', '1050');
+        expect(image).toHaveAttr('data-height', '697');
+        expect(image).toHaveAttr('data-top', '0');
+        expect(image).toHaveAttr('data-left', '0');
         done();
       }, 500);
     }, 1000);
