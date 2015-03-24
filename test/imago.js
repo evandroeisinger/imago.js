@@ -1,4 +1,5 @@
 var image,
+    imageWithAttributes,
     imageWithFigure,
     figureWithImage;
 
@@ -9,6 +10,7 @@ describe('imago.js', function(argument) {
     loadFixtures('fixture.html');
     
     image = document.getElementById('image');
+    imageWithAttributes = document.getElementById('imageWithAttributes');
     imageWithFigure = document.getElementById('imageWithFigure');
     figureWithImage = document.getElementById('figureWithImage');
   });
@@ -76,6 +78,28 @@ describe('imago.js', function(argument) {
         done();
       }, 500);
     }, 1000);
+
+    it('load image data attributes', function(done) {
+      console.log(imageWithAttributes);
+      expect(imageWithAttributes).toHaveAttr('data-original-width', '640');
+      expect(imageWithAttributes).toHaveAttr('data-original-height', '424');
+      expect(imageWithAttributes).toHaveAttr('data-width', '640');
+      expect(imageWithAttributes).toHaveAttr('data-height', '424');
+      expect(imageWithAttributes).toHaveAttr('data-top', '0');
+      expect(imageWithAttributes).toHaveAttr('data-left', '0');
+      
+      new Imago(imageWithAttributes);
+
+      setTimeout(function() {
+        expect(imageWithAttributes).toHaveAttr('data-original-width', '640');
+        expect(imageWithAttributes).toHaveAttr('data-original-height', '424');
+        expect(imageWithAttributes).toHaveAttr('data-width', '640');
+        expect(imageWithAttributes).toHaveAttr('data-height', '424');
+        expect(imageWithAttributes).toHaveAttr('data-top', '0');
+        expect(imageWithAttributes).toHaveAttr('data-left', '0');
+        done();
+      }, 500);
+    });
 
     afterEach(function(done) {
       done();
