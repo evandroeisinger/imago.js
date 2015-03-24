@@ -321,7 +321,7 @@
       
       if (!_moveHandler) {
         _moveHandler = document.createElement('div');
-        _moveHandler.className = 'crop__move';
+        _moveHandler.className = 'crop__move-handler';
       }
       
       if (!_topLeftHandler) {
