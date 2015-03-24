@@ -12,8 +12,8 @@
 
   function Imago(image) {
     var self = this;
-
-    function _fetch() {
+    
+    function initialize() {
       self.tmp = {};
       self.data = self.loadAttributes(image);
       self.elements = self.loadElements(image);
@@ -22,42 +22,172 @@
       self.applyDimensions(self.data, self.elements);
       self.applyPositions(self.data, self.elements);
       self.applyAttributes(self.data, self.elements);
-      self.initialize(self.elements);
+      self.applyElements(self.elements);
     }
 
-    function _edit() {
-      self.showElements(self.elements);
+    function startCropping(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (e.which !== 1)
+        return;
+
+      var figurePosition = self.getElementPosition(self.elements.figure),
+          imagePosition = self.getElementPosition(self.elements.image);
+
+      self.tmp = {
+        handler: e.currentTarget.className,
+        
+        image: {
+          top: imagePosition.top,
+          left: imagePosition.left,
+          width: self.elements.image.clientWidth,
+          height: self.elements.image.clientHeight,
+        },
+
+        figure: {
+          top: figurePosition.top,
+          left: figurePosition.left,
+          width: self.elements.figure.clientWidth,
+          height: self.elements.figure.clientHeight,
+        }
+      };
+      
+      document.addEventListener('mousemove', crop);
+      document.addEventListener('mouseup', stopCropping);
     }
 
-    function _save() {
-      self.hideElements(self.elements);
+    function crop(e) {
+      e.preventDefault();
+      
+      var croppingData = self.calculateCropping(self.data, self.tmp, {
+        x: e.pageX,
+        y: e.pageY,
+      });
+
+      self.applyPositions(croppingData, self.elements);
+      self.applyDimensions(croppingData, self.elements);
     }
 
-    function _undo() {
-      self.hideElements(self.elements);
-    }
+    function stopCropping(e) {
+      e.preventDefault();
 
-    function _reset() {
-      self.hideElements(self.elements);
+      document.removeEventListener('mousemove', crop);
+      document.removeEventListener('mouseup', stopCropping);
     }
 
     if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
       throw new TypeError('Invalid image: ' + image);
 
     if (!image.complete)
-      image.onload = _fetch;
+      image.onload = initialize;
     else
-      _fetch();
+      initialize();
 
     return {
-      save: _save,
-      edit: _edit,
-      undo: _undo,
-      reset: _reset
+      edit: function() {
+        self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
+        self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
+        
+        self.showElements(self.elements);
+      },
+
+      save: function() {
+        self.hideElements(self.elements);
+      },
+      
+      undo: function() {
+        self.hideElements(self.elements);
+      },
+      
+      reset: function() {
+        self.hideElements(self.elements);
+      }
     };
   }
 
   Imago.prototype = {
+    getElementPosition: function(element) {
+      var _top = 0,
+          _left = 0;
+
+      do {
+        _left += element.offsetLeft;
+        _top  += element.offsetTop;  
+      } while (element = element.offsetParent);
+
+      return {
+        top: _top,
+        left: _left
+      }
+    },
+
+    calculateCropping: function(data, tmp, mouse) {
+      var _top = 0,
+          _left = 0,
+          _right = 0,
+          _bottom = 0,
+          _width = 0,
+          _height = 0;
+
+      switch(tmp.handler) {
+        case 'crop__top-left-handler':
+          _width = tmp.image.width - (mouse.x - tmp.image.left);
+          _left = mouse.x;
+          _top = mouse.y - ((_width / data.originalWidth * data.originalHeight) - (tmp.image.height - (mouse.y - tmp.image.top)));
+          break;
+
+        case 'crop__bottom-right-handler':
+          _width = mouse.x - tmp.image.left;
+          _left  = tmp.image.left;
+          _top   = tmp.image.top;
+          break;
+      }
+      
+      _height = (_width / data.originalWidth) * data.originalHeight;
+      _right = (tmp.figure.left + tmp.figure.width) - (_left + _width);
+      _bottom = (tmp.figure.top + tmp.figure.height) - (_top + _height);
+      _top = _top - tmp.figure.top;
+      _left = _left - tmp.figure.left;
+      
+      if (_top > 0) {
+        _top = 0;
+      }
+
+      if (_left > 0) {
+        _left = 0;
+      }
+
+      if (_bottom > 0) {
+        _top = _top - (_bottom * -1);
+        _height = (_top * -1) + tmp.figure.height;
+      } 
+
+      if (_right > 0) {
+        _left = _left - (_right * -1);
+        _width = (_left * -1) + tmp.figure.width;
+      }
+
+      if (_width < data.originalWidth) {
+        _left = 0;
+        _width = data.originalWidth;
+      }
+
+      if (_height < data.originalHeight) {
+        _top = 0;
+        _height = data.originalHeight;
+      }
+
+      return {
+        top: Math.round(_top),
+        left: Math.round(_left),
+        width: Math.round(_width),
+        height: Math.round(_height),
+        right: Math.round(_right),
+        bottom: Math.round(_bottom),
+      };
+    },
+
     showElements: function(elements) {
       elements.figure.style.overflow = 'inherit';
     
@@ -192,6 +322,19 @@
       elements.handlers.style.height = data.height + 'px';
     },
 
+    applyPositions: function(data, elements) {
+      // left
+      elements.image.style.top = data.top + 'px';
+      elements.shadow.style.top = data.top + 'px';
+      elements.mask.style.top = data.top + 'px';
+      elements.handlers.style.top = data.top + 'px';
+      // right
+      elements.image.style.left = data.left + 'px';
+      elements.shadow.style.left = data.left + 'px';
+      elements.mask.style.left = data.left + 'px';
+      elements.handlers.style.left = data.left + 'px';
+    },
+
     applyStyles: function(elements) {
       // figure
       elements.figure.style.overflow = 'hidden';
@@ -215,46 +358,36 @@
       // handlers
       elements.handlers.style.position = 'absolute';
       elements.handlers.style.zIndex = '30';
-      // handler elements
+      // move handler
       elements.moveHandler.style.position = 'absolute';
+      elements.moveHandler.style.top = '0';
+      elements.moveHandler.style.left = '0';
+      elements.moveHandler.style.right = '0';
+      elements.moveHandler.style.bottom = '0';
+      // top left handler
       elements.topLeftHandler.style.position = 'absolute';
+      elements.topLeftHandler.style.top = '0';
+      elements.topLeftHandler.style.left = '0';
+      // bottom right handler
       elements.bottomRightHandler.style.position = 'absolute';
+      elements.bottomRightHandler.style.bottom = '0';
+      elements.bottomRightHandler.style.right = '0';
     },
 
-    applyPositions: function(data, elements) {
-      // left
-      elements.image.style.top = data.top + 'px';
-      elements.shadow.style.top = data.top + 'px';
-      elements.mask.style.top = data.top + 'px';
-      elements.handlers.style.top = data.top + 'px';
-      // right
-      elements.image.style.left = data.left + 'px';
-      elements.shadow.style.left = data.left + 'px';
-      elements.mask.style.left = data.left + 'px';
-      elements.handlers.style.left = data.left + 'px';
-    },
-
-    initialize: function(elements) {
-      var _image = elements.image,
-          _figure = elements.figure,
-          _shadow = elements.shadow,
-          _mask = elements.mask,
-          _wrapper = elements.wrapper,
-          _handlers = elements.handlers;
-    
-      if (!_figure.parentElement)
-        _image.parentElement.insertBefore(_figure, _image);
+    applyElements: function(elements) {
+      if (!elements.figure.parentElement)
+        elements.image.parentElement.insertBefore(elements.figure, elements.image);
       
-      _figure.appendChild(_image);
+      elements.figure.appendChild(elements.image);
 
-      if (_mask.parentElement)
-        _figure.removeChild(_mask);
+      if (elements.mask.parentElement)
+        elements.figure.removeChild(elements.mask);
         
-      if (_wrapper.parentElement)
-        _figure.removeChild(_wrapper);
+      if (elements.wrapper.parentElement)
+        elements.figure.removeChild(elements.wrapper);
 
-      if (_handlers.parentElement)
-        _figure.removeChild(_handlers);
+      if (elements.handlers.parentElement)
+        elements.figure.removeChild(elements.handlers);
     },
   };
 
