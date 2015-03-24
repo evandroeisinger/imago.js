@@ -32,8 +32,8 @@
       if (e.which !== 1)
         return;
 
-      var figurePosition = self.getElementPosition(self.elements.figure),
-          imagePosition = self.getElementPosition(self.elements.image);
+      var figurePosition = self.calculatePosition(self.elements.figure),
+          imagePosition = self.calculatePosition(self.elements.image);
 
       self.tmp = {
         handler: e.currentTarget.className,
@@ -87,8 +87,8 @@
       if (e.which !== 1)
         return;
 
-      var figurePosition = self.getElementPosition(self.elements.figure),
-          imagePosition = self.getElementPosition(self.elements.image);
+      var figurePosition = self.calculatePosition(self.elements.figure),
+          imagePosition = self.calculatePosition(self.elements.image);
 
       self.tmp = {
         handler: e.currentTarget.className,
@@ -162,7 +162,7 @@
   }
 
   Imago.prototype = {
-    getElementPosition: function(element) {
+    calculatePosition: function(element) {
       var _top = 0,
           _left = 0;
 
