@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+article {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+button {
+  outline: none;
+  font-size: 1em;
+  border: black solid 1px;
+  border-radius: .25rem;
+  background: transparent;
+  cursor: pointer;
+  color: black;
+  margin-right: 0.5rem;
+  line-height: 1.5rem;
+}
+
+button:hover {
+  color: white;
+  background: black;
+}
+
+.actions {
+  margin: 1em 0;
+}
