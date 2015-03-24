@@ -18,6 +18,7 @@
       self.data = self.loadAttributes(image);
       self.elements = self.loadElements(image);
       
+      self.applyStyles(self.elements);
       self.applyDimensions(self.data, self.elements);
       self.applyPositions(self.data, self.elements);
       self.applyAttributes(self.data, self.elements);
@@ -97,7 +98,6 @@
       _topLeftHandler = _figure.getElementsByClassName('crop__top-left-handler')[0];
       _bottomRightHandler = _figure.getElementsByClassName('crop__bottom-right-handler')[0];
 
-
       if (!_mask) {
         _mask = document.createElement('div');
         _mask.className = 'crop__mask';
@@ -131,31 +131,6 @@
       _shadow = _shadow || _image.cloneNode();
       _shadow.className = 'crop__shadow';
       _shadow.removeAttribute('id');
-      _shadow.style.position = 'absolute';
-
-      _figure.style.overflow = 'hidden';
-      _figure.style.position = 'relative';
-      
-      _mask.style.position = 'absolute';
-      _mask.style.zIndex = '10';
-      
-      _handlers.style.position = 'absolute';
-      _handlers.style.zIndex = '30';
-
-      _wrapper.style.position = 'absolute';
-      _wrapper.style.overflow = 'hidden';
-      _wrapper.style.top = '0';
-      _wrapper.style.left = '0';
-      _wrapper.style.right = '0';
-      _wrapper.style.bottom = '0';
-      _wrapper.style.zIndex = '20';
-
-      _image.style.position = 'absolute';  
-      _image.style.zIndex = '0';
-
-      _moveHandler.style.position = 'absolute';
-      _topLeftHandler.style.position = 'absolute';
-      _bottomRightHandler.style.position = 'absolute';
 
       _handlers.appendChild(_moveHandler);
       _handlers.appendChild(_topLeftHandler);
@@ -215,6 +190,35 @@
       elements.shadow.style.height = data.height + 'px';
       elements.mask.style.height = data.height + 'px';
       elements.handlers.style.height = data.height + 'px';
+    },
+
+    applyStyles: function(elements) {
+      // figure
+      elements.figure.style.overflow = 'hidden';
+      elements.figure.style.position = 'relative';
+      // image
+      elements.image.style.position = 'absolute';  
+      elements.image.style.zIndex = '0';
+      // wrapper
+      elements.wrapper.style.position = 'absolute';
+      elements.wrapper.style.overflow = 'hidden';
+      elements.wrapper.style.top = '0';
+      elements.wrapper.style.left = '0';
+      elements.wrapper.style.right = '0';
+      elements.wrapper.style.bottom = '0';
+      elements.wrapper.style.zIndex = '20';
+      // shadow
+      elements.shadow.style.position = 'absolute';
+      // mask
+      elements.mask.style.position = 'absolute';
+      elements.mask.style.zIndex = '10';
+      // handlers
+      elements.handlers.style.position = 'absolute';
+      elements.handlers.style.zIndex = '30';
+      // handler elements
+      elements.moveHandler.style.position = 'absolute';
+      elements.topLeftHandler.style.position = 'absolute';
+      elements.bottomRightHandler.style.position = 'absolute';
     },
 
     applyPositions: function(data, elements) {
