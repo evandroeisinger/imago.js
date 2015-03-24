@@ -58,29 +58,19 @@
 
   Imago.prototype = {
     showElements: function(elements) {
-      var _figure = elements.figure,
-          _mask = elements.mask,
-          _wrapper = elements.wrapper,
-          _handlers = elements.handlers;
-
-      _figure.style.overflow = 'inherit';
+      elements.figure.style.overflow = 'inherit';
     
-      _figure.appendChild(_mask);
-      _figure.appendChild(_wrapper);
-      _figure.appendChild(_handlers);
+      elements.figure.appendChild(elements.mask);
+      elements.figure.appendChild(elements.wrapper);
+      elements.figure.appendChild(elements.handlers);
     },
 
     hideElements: function(elements) {
-      var _figure = elements.figure,
-          _mask = elements.mask,
-          _wrapper = elements.wrapper,
-          _handlers = elements.handlers;
-
-      _figure.style.overflow = 'hidden';
+      elements.figure.style.overflow = 'hidden';
     
-      _figure.removeChild(_mask);
-      _figure.removeChild(_wrapper);
-      _figure.removeChild(_handlers);
+      elements.figure.removeChild(elements.mask);
+      elements.figure.removeChild(elements.wrapper);
+      elements.figure.removeChild(elements.handlers);
     },
 
     loadElements: function(image) {
