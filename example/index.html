@@ -8,10 +8,10 @@
   <article>
     <h1>imago.js</h1>
     <div class="actions">
-      <button id="save" onclick="save()">save</button>
-      <button id="edit" onclick="edit()">edit</button>
-      <button id="undo" onclick="undo()">undo</button>
-      <button id="reset" onclick="reset()">reset</button>
+      <button id="editButton" onclick="edit()">edit</button>
+      <button id="saveButton" onclick="save()" disabled="true">save</button>
+      <button id="undoButton" onclick="undo()" disabled="true">undo</button>
+      <button id="resetButton" onclick="reset()" disabled="true">reset</button>
     </div>
     <img id="image" src="../test/fixture.jpg" alt="Davide Gabino">
   </article>
@@ -19,22 +19,40 @@
   <script type="text/javascript" src="../src/imago.js"></script>
   <script type="text/javascript">
     var image = document.getElementById('image'),
-      editor = new Imago(image);
+        editButton = document.getElementById('editButton'),
+        saveButton = document.getElementById('saveButton'),
+        undoButton = document.getElementById('undoButton'),
+        resetButton = document.getElementById('resetButton'),
+        editor = new Imago(image);
 
-    function save() {
-      console.log('save');
+    function enableEdition() {
+      editButton.setAttribute('disabled', true);
+      saveButton.removeAttribute('disabled');
+      undoButton.removeAttribute('disabled');
+      resetButton.removeAttribute('disabled');
     }
 
+    function disableEdition() {
+      editButton.removeAttribute('disabled');
+      saveButton.setAttribute('disabled', true);
+      undoButton.setAttribute('disabled', true);
+      resetButton.setAttribute('disabled', true);
+    }
+    
     function edit() {
-      console.log('edit');
+      enableEdition();
+    }
+
+    function save() {
+      disableEdition();
     }
 
     function undo() {
-      console.log('undo');
+      disableEdition();
     }
 
     function reset() {
-      console.log('reset');
+      disableEdition();
     }
   </script>
 </body>

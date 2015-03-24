@@ -10,6 +10,11 @@ article {
   padding: 1rem 0;
 }
 
+h1 {
+  font-size: 2.5rem;
+  font-family: sans-serif;
+}
+
 figure {
   margin: 0;
   padding: 0;
@@ -35,6 +40,11 @@ button {
 button:hover {
   color: white;
   background: black;
+}
+
+button:disabled {
+  opacity: .25;
+  cursor: no-drop;
 }
 
 .actions {
