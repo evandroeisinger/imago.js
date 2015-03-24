@@ -165,7 +165,7 @@
         height: _height || image.clientHeight,
         top: _top || 0,
         left: _left || 0,
-      }
+      };
     },
 
     applyAttributes: function(data, elements) {
@@ -195,14 +195,14 @@
     applyPositions: function(data, elements) {
       // left
       elements.image.style.top = data.top + 'px';
-      elements.shadow.style.top = data.top, 'px';
-      elements.mask.style.top = data.top, 'px';
-      elements.handlers.style.top = data.top, 'px';
+      elements.shadow.style.top = data.top + 'px';
+      elements.mask.style.top = data.top + 'px';
+      elements.handlers.style.top = data.top + 'px';
       // right
-      elements.image.style.left = data.left, 'px';
-      elements.shadow.style.left = data.left, 'px';
-      elements.mask.style.left = data.left, 'px';
-      elements.handlers.style.left = data.left, 'px';
+      elements.image.style.left = data.left + 'px';
+      elements.shadow.style.left = data.left + 'px';
+      elements.mask.style.left = data.left + 'px';
+      elements.handlers.style.left = data.left + 'px';
     },
 
     initialize: function(elements) {
