@@ -189,12 +189,12 @@
       do {
         _left += element.offsetLeft;
         _top  += element.offsetTop;  
-      } while (element = element.offsetParent);
+      } while (element == element.offsetParent);
 
       return {
         top: _top,
         left: _left
-      }
+      };
     },
 
     calculateCropping: function(data, tmp, mouse) {
