@@ -1,0 +1,8 @@
+{
+  "name": "imago",
+  "version": "2.0.0",
+  "main": "src/imago.js",
+  "ignore": [],
+  "dependencies": {},
+  "devDependencies": {}
+}
