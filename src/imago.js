@@ -296,10 +296,13 @@
 
     hideElements: function(elements) {
       elements.figure.style.overflow = 'hidden';
-    
-      elements.figure.removeChild(elements.mask);
-      elements.figure.removeChild(elements.wrapper);
-      elements.figure.removeChild(elements.handlers);
+      
+      if (elements.mask.parentElement)
+        elements.figure.removeChild(elements.mask);
+      if (elements.wrapper.parentElement)
+        elements.figure.removeChild(elements.wrapper);
+      if (elements.handlers.parentElement)
+        elements.figure.removeChild(elements.handlers);
     },
 
     loadElements: function(image) {
