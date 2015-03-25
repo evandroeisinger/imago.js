@@ -31,9 +31,9 @@ new Imago(imageElement);
 ```
 
 ### parameters
-  - **imageElement**: element where imago will initialize. 
-  
-> if the image element already has editing attributes and/or editing elements it will be rendered according to them.*
+  - **imageElement**: image element used by the imago constructor. 
+
+> if the image element already has editing attributes and/or editing elements it will be rendered according to them.
 
 ```html
 <!-- image with editing attributes -->
