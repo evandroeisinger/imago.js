@@ -16,6 +16,7 @@
     function initialize() {
       self.tmp = {};
       self.data = self.loadAttributes(image);
+      self.tmp.data = self.data;
       self.elements = self.loadElements(image);
 
       self.elements.moveHandler.addEventListener('mousedown', startDragging);
