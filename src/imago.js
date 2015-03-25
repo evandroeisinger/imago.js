@@ -160,7 +160,7 @@
         self.hideElements(self.elements);
       },
       
-      undo: function() {
+      cancel: function() {
         self.applyPositions(self.data, self.elements);
         self.applyDimensions(self.data, self.elements);
         self.applyAttributes(self.data, self.elements);

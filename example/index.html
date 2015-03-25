@@ -2,7 +2,90 @@
 <html>
 <head>
   <title>imago.js</title>
-  <link rel="stylesheet" href="../test/fixture.css">
+  <style type="text/css">
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    article {
+      width: 100%;
+      max-width: 768px;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-family: sans-serif;
+    }
+
+    figure {
+      margin: 0;
+      padding: 0;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    button {
+      outline: none;
+      font-size: 1em;
+      border: black solid 1px;
+      border-radius: .25rem;
+      background: white;
+      cursor: pointer;
+      color: black;
+      margin-right: 0.5rem;
+      line-height: 1.5rem;
+    }
+
+    button:hover {
+      color: white;
+      background: black;
+    }
+
+    button:disabled {
+      opacity: .25;
+      cursor: no-drop;
+    }
+
+    .actions {
+      margin: 1em 0;
+      position: relative;
+      z-index: 999;
+    }
+
+    .crop__mask {
+      background: rgba(255, 255, 255, .75);
+    }
+
+    .crop__handlers span {
+      border: 4px solid white;
+      width: 12px;
+      height: 12px;
+      z-index: 50;
+      margin: 5px;
+    }
+
+    .crop__move-handler {
+      cursor: move;
+    }
+
+    .crop__handlers span.crop__top-left-handler {
+      border-right: 0;
+      border-bottom: 0;
+      cursor: nw-resize;
+    }
+
+    .crop__handlers span.crop__bottom-right-handler {
+      border-left: 0;
+      border-top: 0;
+      cursor: se-resize;
+    }
+  </style>
 </head>
 <body>
   <article>
@@ -11,7 +94,7 @@
     <div class="actions">
       <button id="editButton" onclick="edit()">edit</button>
       <button id="saveButton" onclick="save()" disabled="true">save</button>
-      <button id="undoButton" onclick="undo()" disabled="true">undo</button>
+      <button id="undoButton" onclick="cancel()" disabled="true">cancel</button>
       <button id="resetButton" onclick="reset()" disabled="true">reset</button>
     </div>
   </article>
@@ -48,9 +131,9 @@
       image.save();
     }
 
-    function undo() {
+    function cancel() {
       disableEdition();
-      image.undo();
+      image.cancel();
     }
 
     function reset() {
