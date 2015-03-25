@@ -188,8 +188,8 @@
 
       do {
         _left += element.offsetLeft;
-        _top  += element.offsetTop;  
-      } while (element == element.offsetParent);
+        _top  += element.offsetTop;
+      } while (element.offsetParent);
 
       return {
         top: _top,
