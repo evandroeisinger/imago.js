@@ -23,6 +23,10 @@
       self.applyPositions(self.data, self.elements);
       self.applyAttributes(self.data, self.elements);
       self.applyElements(self.elements);
+
+      self.elements.moveHandler.addEventListener('mousedown', startDragging);
+      self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
+      self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
     }
 
     function startDragging(e) {
@@ -35,27 +39,23 @@
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
 
-      self.tmp = {
-        handler: e.currentTarget.className,
-        
-        image: {
-          top: imagePosition.top,
-          left: imagePosition.left,
-          width: self.elements.image.clientWidth,
-          height: self.elements.image.clientHeight,
-        },
+      self.tmp.image = {
+        top: imagePosition.top,
+        left: imagePosition.left,
+        width: self.elements.image.clientWidth,
+        height: self.elements.image.clientHeight,
+      };
 
-        figure: {
-          top: figurePosition.top,
-          left: figurePosition.left,
-          width: self.elements.figure.clientWidth,
-          height: self.elements.figure.clientHeight,
-        },
+      self.tmp.figure = {
+        top: figurePosition.top,
+        left: figurePosition.left,
+        width: self.elements.figure.clientWidth,
+        height: self.elements.figure.clientHeight,
+      };
 
-        mouse: {
-          x: e.pageX,
-          y: e.pageY, 
-        }
+      self.tmp.mouse = {
+        x: e.pageX,
+        y: e.pageY, 
       };
       
       document.addEventListener('mousemove', drag);
@@ -70,8 +70,11 @@
         y: e.pageY,
       });
 
-      self.applyPositions(draggingData, self.elements);
-      self.applyDimensions(draggingData, self.elements);
+      self.tmp.data.top = draggingData.top;
+      self.tmp.data.left = draggingData.left;
+
+      self.applyPositions(self.tmp.data, self.elements);
+      self.applyDimensions(self.tmp.data, self.elements);
     }
 
     function stopDragging(e) {
@@ -90,22 +93,20 @@
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
 
-      self.tmp = {
-        handler: e.currentTarget.className,
+      self.tmp.handler = e.currentTarget.className;
         
-        image: {
-          top: imagePosition.top,
-          left: imagePosition.left,
-          width: self.elements.image.clientWidth,
-          height: self.elements.image.clientHeight,
-        },
+      self.tmp.image = {
+        top: imagePosition.top,
+        left: imagePosition.left,
+        width: self.elements.image.clientWidth,
+        height: self.elements.image.clientHeight,
+      };
 
-        figure: {
-          top: figurePosition.top,
-          left: figurePosition.left,
-          width: self.elements.figure.clientWidth,
-          height: self.elements.figure.clientHeight,
-        }
+      self.tmp.figure = {
+        top: figurePosition.top,
+        left: figurePosition.left,
+        width: self.elements.figure.clientWidth,
+        height: self.elements.figure.clientHeight,
       };
       
       document.addEventListener('mousemove', crop);
@@ -120,8 +121,13 @@
         y: e.pageY,
       });
 
-      self.applyPositions(croppingData, self.elements);
-      self.applyDimensions(croppingData, self.elements);
+      self.tmp.data.width = croppingData.width; 
+      self.tmp.data.height = croppingData.height;
+      self.tmp.data.top = croppingData.top;
+      self.tmp.data.left = croppingData.left;
+
+      self.applyPositions(self.tmp.data, self.elements);
+      self.applyDimensions(self.tmp.data, self.elements);
     }
 
     function stopCropping(e) {
@@ -140,22 +146,36 @@
 
     return {
       edit: function() {
-        self.elements.moveHandler.addEventListener('mousedown', startDragging);
-        self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
-        self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
-        
+        self.tmp.data = {};        
         self.showElements(self.elements);
       },
 
       save: function() {
+        self.data.width = self.tmp.data.width || self.data.width;
+        self.data.height = self.tmp.data.height || self.data.height;
+        self.data.top = self.tmp.data.top || self.data.top;
+        self.data.left = self.tmp.data.left || self.data.left;
+
+        self.applyAttributes(self.data, self.elements);
         self.hideElements(self.elements);
       },
       
       undo: function() {
+        self.applyPositions(self.data, self.elements);
+        self.applyDimensions(self.data, self.elements);
+        self.applyAttributes(self.data, self.elements);
         self.hideElements(self.elements);
       },
       
       reset: function() {
+        self.data.width = self.data.originalWidth;
+        self.data.height = self.data.originalHeight;
+        self.data.top = 0;
+        self.data.left = 0;
+
+        self.applyPositions(self.data, self.elements);
+        self.applyDimensions(self.data, self.elements);
+        self.applyAttributes(self.data, self.elements);
         self.hideElements(self.elements);
       }
     };
