@@ -6,9 +6,11 @@ var image,
 describe('imago.js', function(argument) {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = '../../base/test';
-    loadFixtures('fixture.css');
+    jasmine.getStyleFixtures().fixturesPath = '../../base/test';
+
+    loadStyleFixtures('fixture.css');
     loadFixtures('fixture.html');
-    
+
     image = document.getElementById('image');
     imageWithAttributes = document.getElementById('imageWithAttributes');
     imageWithFigure = document.getElementById('imageWithFigure');
@@ -69,11 +71,10 @@ describe('imago.js', function(argument) {
       new Imago(image);
 
       setTimeout(function() {
-        console.log(image);
-        expect(image).toHaveAttr('data-original-width', '1050');
-        expect(image).toHaveAttr('data-original-height', '697');
-        expect(image).toHaveAttr('data-width', '1050');
-        expect(image).toHaveAttr('data-height', '697');
+        expect(image).toHaveAttr('data-original-width', '640');
+        expect(image).toHaveAttr('data-original-height', '424');
+        expect(image).toHaveAttr('data-width', '640');
+        expect(image).toHaveAttr('data-height', '424');
         expect(image).toHaveAttr('data-top', '0');
         expect(image).toHaveAttr('data-left', '0');
         done();
