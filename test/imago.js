@@ -31,7 +31,7 @@ describe('imago.js', function(argument) {
     var imago = new Imago(image);
     expect(imago.save).toBeDefined();
     expect(imago.edit).toBeDefined();
-    expect(imago.undo).toBeDefined();
+    expect(imago.cancel).toBeDefined();
     expect(imago.reset).toBeDefined();
   });
 
