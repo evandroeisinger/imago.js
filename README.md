@@ -26,44 +26,68 @@ imago.reset();
 
 ---
 ### constructor
-if the image element already has editing attributes and/or editing elements it will be rendered according to them.
 ```javascript
 new Imago(imageElement);
 ```
+
 ##### parameters
-  - **imageElement**: element where imago will initialize.
-  
+  **imageElement**: element where imago will initialize. *if the image element already has editing attributes and/or editing elements it will be rendered according to them.*
+
+```html
+<!-- image with editing attributes -->
+<img src="example.jpg" data-original-width="640" data-original-height="424" data-width="640" data-height="424" data-top="0" data-left="0">
+
+<!-- image with initial editing elements -->
+<figure>
+  <img src="example.jpg" data-original-width="640" data-original-height="424" data-width="640" data-height="424" data-top="0" data-left="0">
+</figure>
+
+<!-- image with all editing elements -->
+<figure>
+  <img src="example.jpg" data-original-width="640" data-original-height="424" data-width="640" data-height="424" data-top="0" data-left="0">
+  <div class="crop__mask"></div>
+  <div class="crop__wrapper">
+    <img src="example.jpg">
+  </div>
+  <div class="crop__handlers">
+    <div class="crop__move-handler"></div>
+    <span class="crop__top-left-handler"></span>
+    <span class="crop__bottom-right-handler"></span>
+  </div>
+</figure>
+```
+
 ##### editing attributes
-  - **data-original-width**;
-  - **data-original-height**;
-  - **data-width**;
-  - **data-height**;
-  - **data-top**;
-  - **data-left**;
+**data-original-width**;
+**data-original-height**;
+**data-width**;
+**data-height**;
+**data-top**;
+**data-left**;
 
 ##### editing elements
-  - **figure**:
-    - **image**;
-    - *.crop__mask*;
-    - *.crop__wrapper*:
-      - .crop__shadow;
-    - *.crop__handlers*:
-      - .crop__move-handler;
-      - .crop__top-left-handler;
-      - .crop__bottom-right-handler;
+**figure**:
+  **image**;
+    *.crop__mask*;
+    *.crop__wrapper*:
+      .crop__shadow;
+    *.crop__handlers*:
+      .crop__move-handler;
+      .crop__top-left-handler;
+      .crop__bottom-right-handler;
 
 ##### methods
-  - **imago.edit()**;
-  - **imago.save()**;
-  - **imago.cancel()**;
-  - **imago.reset()**;
+**imago.edit()**;
+**imago.save()**;
+**imago.cancel()**;
+**imago.reset()**;
 
 ---
 ### support
-- chrome: latest;
-- firefox: latest;
-- safari: latest;
-- internet explore: 9+;
+**chrome**: latest;
+**firefox**: latest;
+**safari**: latest;
+**internet explore**: 9+;
 
 ---
 ### contribute
