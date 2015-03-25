@@ -189,6 +189,7 @@
       do {
         _left += element.offsetLeft;
         _top  += element.offsetTop;
+        element = element.offsetParent;
       } while (element.offsetParent);
 
       return {
