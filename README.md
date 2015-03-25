@@ -4,7 +4,7 @@
 
 ### install
 Available on npm and bower:
-`npm install imago`, `bower install imago` or [directly download](https://github.com/evandroeisinger/imago.js/raw/master/src/editore.js)
+`npm install imago`, `bower install imago.js` or [directly download](https://github.com/evandroeisinger/imago.js/raw/master/src/editore.js)
 
 ### basic usage
 ```javascript
