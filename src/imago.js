@@ -17,16 +17,16 @@
       self.tmp = {};
       self.data = self.loadAttributes(image);
       self.elements = self.loadElements(image);
+
+      self.elements.moveHandler.addEventListener('mousedown', startDragging);
+      self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
+      self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
       
       self.applyStyles(self.elements);
       self.applyDimensions(self.data, self.elements);
       self.applyPositions(self.data, self.elements);
       self.applyAttributes(self.data, self.elements);
       self.applyElements(self.elements);
-
-      self.elements.moveHandler.addEventListener('mousedown', startDragging);
-      self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
-      self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
     }
 
     function startDragging(e) {
@@ -146,7 +146,7 @@
 
     return {
       edit: function() {
-        self.tmp.data = {};        
+        self.tmp.data = {};
         self.showElements(self.elements);
       },
 
