@@ -30,7 +30,7 @@ button {
   font-size: 1em;
   border: black solid 1px;
   border-radius: .25rem;
-  background: transparent;
+  background: white;
   cursor: pointer;
   color: black;
   margin-right: 0.5rem;
@@ -49,6 +49,8 @@ button:disabled {
 
 .actions {
   margin: 1em 0;
+  position: relative;
+  z-index: 999;
 }
 
 .crop__mask {
