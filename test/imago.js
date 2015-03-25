@@ -69,6 +69,7 @@ describe('imago.js', function(argument) {
       new Imago(image);
 
       setTimeout(function() {
+        console.log(image);
         expect(image).toHaveAttr('data-original-width', '1050');
         expect(image).toHaveAttr('data-original-height', '697');
         expect(image).toHaveAttr('data-width', '1050');
