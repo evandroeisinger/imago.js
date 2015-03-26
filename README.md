@@ -68,27 +68,29 @@ new Imago(imageElement);
 - **data-left**;
 
 ### editing elements
-- **figure**:
-  - **image**;
-  - *.crop__mask*;
-  - *.crop__wrapper*:
-    - .crop__shadow;
-  - *.crop__handlers*:
-    - .crop__move-handler;
-    - .crop__top-left-handler;
-    - .crop__bottom-right-handler;
+```
+figure
+├  image
+├  .crop__mask
+├  .crop__wrapper
+├  └  .crop__shadow
+└  .crop__handler
+   ├  .crop__move-handler
+   ├  .crop__top-left-handler
+   └  .crop__bottom-right-handler
+```
 
 ### methods
-- **imago.edit()**;
-- **imago.save()**;
-- **imago.cancel()**;
-- **imago.reset()**;
+- imago.**edit()**;
+- imago.**save()**;
+- imago.**cancel()**;
+- imago.**reset()**;
 
 ### support
-- **chrome**: latest;
-- **firefox**: latest;
-- **safari**: latest;
-- **internet explore**: 9+;
+- chrome: **latest**;
+- firefox: **latest**;
+- safari: **latest**;
+- internet explore: **9+**;
 
 ---
 ### contribute
