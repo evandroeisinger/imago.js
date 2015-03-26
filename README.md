@@ -70,13 +70,13 @@ new Imago(imageElement);
 ### editing elements
 - **figure**:
   - **image**;
-    - *.crop__mask*;
-    - *.crop__wrapper*:
-      - .crop__shadow;
-    - *.crop__handlers*:
-      - .crop__move-handler;
-      - .crop__top-left-handler;
-      - .crop__bottom-right-handler;
+  - *.crop__mask*;
+  - *.crop__wrapper*:
+    - .crop__shadow;
+  - *.crop__handlers*:
+    - .crop__move-handler;
+    - .crop__top-left-handler;
+    - .crop__bottom-right-handler;
 
 ### methods
 - **imago.edit()**;
@@ -84,7 +84,6 @@ new Imago(imageElement);
 - **imago.cancel()**;
 - **imago.reset()**;
 
----
 ### support
 - **chrome**: latest;
 - **firefox**: latest;
