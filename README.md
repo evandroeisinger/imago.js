@@ -23,17 +23,7 @@ imago.cancel();
 // to reset image edition
 imago.reset();
 ```
-
----
-### constructor
-```javascript
-new Imago(imageElement);
-```
-
-### parameters
-  - **imageElement**: image element used by the imago constructor. 
-
-> if the image element already has editing attributes and/or editing elements it will be rendered according to them.
+if the image element already has editing attributes and/or editing elements it will be rendered according to them.
 
 ```html
 <!-- image with editing attributes -->
@@ -58,6 +48,14 @@ new Imago(imageElement);
   </div>
 </figure>
 ```
+---
+### constructor
+```javascript
+new Imago(imageElement);
+```
+
+### parameters
+  - **imageElement**: image element used by the imago constructor. 
 
 ### editing attributes
 - **data-original-width**;
