@@ -21,6 +21,8 @@
 
       self.elements.moveHandler.addEventListener('mousedown', startDragging);
       self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
+      self.elements.topRightHandler.addEventListener('mousedown', startCropping);
+      self.elements.bottomLeftHandler.addEventListener('mousedown', startCropping);
       self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
 
       self.applyStyles(self.elements);
@@ -214,6 +216,18 @@
           _top = mouse.y - ((_width / data.originalWidth * data.originalHeight) - (tmp.image.height - (mouse.y - tmp.image.top)));
           break;
 
+        case 'crop__top-right-handler':
+          _width = mouse.x - tmp.image.left;
+          _left = tmp.image.left;
+          _top = mouse.y - ((_width / data.originalWidth * data.originalHeight) - (tmp.image.height - (mouse.y - tmp.image.top)));
+          break;
+
+        case 'crop__bottom-left-handler':
+          _width = tmp.image.width - (mouse.x - tmp.image.left);
+          _left = mouse.x;
+          _top = tmp.image.top;
+          break;
+
         case 'crop__bottom-right-handler':
           _width = mouse.x - tmp.image.left;
           _left  = tmp.image.left;
@@ -315,6 +329,8 @@
           _handlers,
           _moveHandler,
           _topLeftHandler,
+          _topRightHandler,
+          _bottomLeftHandler,
           _bottomRightHandler;
 
       if (_image.parentElement && _image.parentElement.nodeName.toLowerCase() == 'figure')
@@ -328,6 +344,8 @@
       _handlers = _figure.getElementsByClassName('crop__handlers')[0];
       _moveHandler = _figure.getElementsByClassName('crop__move-handler')[0];
       _topLeftHandler = _figure.getElementsByClassName('crop__top-left-handler')[0];
+      _topRightHandler = _figure.getElementsByClassName('crop__top-right-handler')[0];
+      _bottomLeftHandler = _figure.getElementsByClassName('crop__bottom-left-handler')[0];
       _bottomRightHandler = _figure.getElementsByClassName('crop__bottom-right-handler')[0];
 
       if (!_mask) {
@@ -355,6 +373,16 @@
         _topLeftHandler.className = 'crop__top-left-handler';
       }
 
+      if (!_topRightHandler) {
+        _topRightHandler = document.createElement('span');
+        _topRightHandler.className = 'crop__top-right-handler';
+      }
+
+      if (!_bottomLeftHandler) {
+        _bottomLeftHandler = document.createElement('span');
+        _bottomLeftHandler.className = 'crop__bottom-left-handler';
+      }
+
       if (!_bottomRightHandler) {
         _bottomRightHandler = document.createElement('span');
         _bottomRightHandler.className = 'crop__bottom-right-handler';
@@ -366,6 +394,8 @@
 
       _handlers.appendChild(_moveHandler);
       _handlers.appendChild(_topLeftHandler);
+      _handlers.appendChild(_topRightHandler);
+      _handlers.appendChild(_bottomLeftHandler);
       _handlers.appendChild(_bottomRightHandler);
       _wrapper.appendChild(_shadow);
 
@@ -378,6 +408,8 @@
         handlers: _handlers,
         moveHandler: _moveHandler,
         topLeftHandler: _topLeftHandler,
+        topRightHandler: _topRightHandler,
+        bottomLeftHandler: _bottomLeftHandler,
         bottomRightHandler: _bottomRightHandler
       };
     },
@@ -470,6 +502,14 @@
       elements.topLeftHandler.style.position = 'absolute';
       elements.topLeftHandler.style.top = '0';
       elements.topLeftHandler.style.left = '0';
+      // top right handler
+      elements.topRightHandler.style.position = 'absolute';
+      elements.topRightHandler.style.top = '0';
+      elements.topRightHandler.style.right = '0';
+      // bottom left handler
+      elements.bottomLeftHandler.style.position = 'absolute';
+      elements.bottomLeftHandler.style.bottom = '0';
+      elements.bottomLeftHandler.style.left = '0';
       // bottom right handler
       elements.bottomRightHandler.style.position = 'absolute';
       elements.bottomRightHandler.style.bottom = '0';
