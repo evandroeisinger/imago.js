@@ -44,6 +44,8 @@ if the image element already has editing attributes and/or editing elements it w
   <div class="crop__handlers">
     <div class="crop__move-handler"></div>
     <span class="crop__top-left-handler"></span>
+    <span class="crop__top-right-handler"></span>
+    <span class="crop__bottom-left-handler"></span>
     <span class="crop__bottom-right-handler"></span>
   </div>
 </figure>
@@ -55,7 +57,7 @@ new Imago(imageElement);
 ```
 
 ### parameters
-  - **imageElement**: image element used by the imago constructor. 
+  - **imageElement**: image element used by the imago constructor.
 
 ### editing attributes
 - **data-original-width**;
@@ -93,6 +95,6 @@ figure
 ---
 ### contribute
 Everyone can contribute! Finding bugs, creating issues, improving documentation, improving editor it self or creating components.
-Every contribution will be welcomed! :santa: 
+Every contribution will be welcomed! :santa:
 
 **Fork it** -> **Branch it** -> **Test it** -> **Push it** -> **Pull Request it** :gem:
