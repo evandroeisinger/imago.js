@@ -19,10 +19,15 @@
       self.tmp.data = self.data;
       self.elements = self.loadElements(image);
 
+      self.elements.moveHandler.addEventListener('touchstart', startDragging);
       self.elements.moveHandler.addEventListener('mousedown', startDragging);
+      self.elements.topLeftHandler.addEventListener('touchstart', startCropping);
       self.elements.topLeftHandler.addEventListener('mousedown', startCropping);
+      self.elements.topRightHandler.addEventListener('touchstart', startCropping);
       self.elements.topRightHandler.addEventListener('mousedown', startCropping);
+      self.elements.bottomLeftHandler.addEventListener('touchstart', startCropping);
       self.elements.bottomLeftHandler.addEventListener('mousedown', startCropping);
+      self.elements.bottomRightHandler.addEventListener('touchstart', startCropping);
       self.elements.bottomRightHandler.addEventListener('mousedown', startCropping);
 
       self.applyStyles(self.elements);
@@ -36,8 +41,8 @@
       e.preventDefault();
       e.stopPropagation();
 
-      if (e.which !== 1)
-        return;
+      // if (e.which !== 1)
+      //   return;
 
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
@@ -56,22 +61,45 @@
         height: self.elements.figure.clientHeight,
       };
 
-      self.tmp.mouse = {
-        x: e.pageX,
-        y: e.pageY,
-      };
+      if(e.type == 'touchstart') {
+        // Touch Event
+        self.tmp.mouse = {
+          x: e.changedTouches[0].pageX,
+          y: e.changedTouches[0].pageY,
+        };
 
-      document.addEventListener('mousemove', drag);
-      document.addEventListener('mouseup', stopDragging);
+        document.addEventListener('touchmove', drag);
+        document.addEventListener('touchend', stopDragging);
+      } else {
+        // Mouse Event
+        self.tmp.mouse = {
+          x: e.pageX,
+          y: e.pageY,
+        };
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', stopDragging);
+      }
     }
 
     function drag(e) {
       e.preventDefault();
 
-      var draggingData = self.calculateDragging(self.data, self.tmp, {
-        x: e.pageX,
-        y: e.pageY,
-      });
+      var draggingData;
+
+      if(e.type == 'touchmove') {
+        // Touch Event
+        draggingData = self.calculateDragging(self.data, self.tmp, {
+          x: e.changedTouches[0].pageX,
+          y: e.changedTouches[0].pageY,
+        });
+      } else {
+        // Mouse Event
+        draggingData = self.calculateDragging(self.data, self.tmp, {
+          x: e.pageX,
+          y: e.pageY,
+        });
+      }
 
       self.tmp.data.top = draggingData.top;
       self.tmp.data.left = draggingData.left;
@@ -82,16 +110,23 @@
 
     function stopDragging(e) {
       e.preventDefault();
-      document.removeEventListener('mousemove', drag);
-      document.removeEventListener('mouseup', stopDragging);
+
+      if(e.type == 'touchend') {
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('touchend', stopDragging);
+      } else {
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('mouseup', stopDragging);
+      }
     }
 
     function startCropping(e) {
+
       e.preventDefault();
       e.stopPropagation();
 
-      if (e.which !== 1)
-        return;
+      // if (e.which !== 1)
+      //   return;
 
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
@@ -112,17 +147,44 @@
         height: self.elements.figure.clientHeight,
       };
 
-      document.addEventListener('mousemove', crop);
-      document.addEventListener('mouseup', stopCropping);
+      if(e.type == 'touchend') {
+        // Touch Event
+        self.tmp.mouse = {
+          x: e.changedTouches[0].pageX,
+          y: e.changedTouches[0].pageY,
+        };
+
+        document.addEventListener('touchmove', crop);
+        document.addEventListener('touchend', stopCropping);
+
+      } else {
+        // Mouse Event
+        self.tmp.mouse = {
+          x: e.pageX,
+          y: e.pageY,
+        };
+
+        document.addEventListener('mousemove', crop);
+        document.addEventListener('mouseup', stopCropping);
+      }
     }
 
     function crop(e) {
       e.preventDefault();
 
-      var croppingData = self.calculateCropping(self.data, self.tmp, {
-        x: e.pageX,
-        y: e.pageY,
-      });
+      var croppingData;
+
+      if(e.type == 'touchmove') {
+        croppingData = self.calculateCropping(self.data, self.tmp, {
+          x: e.changedTouches[0].pageX,
+          y: e.changedTouches[0].pageY,
+        });
+      } else {
+        croppingData = self.calculateCropping(self.data, self.tmp, {
+          x: e.pageX,
+          y: e.pageY,
+        });
+      }
 
       self.tmp.data.width = croppingData.width;
       self.tmp.data.height = croppingData.height;
@@ -135,8 +197,14 @@
 
     function stopCropping(e) {
       e.preventDefault();
-      document.removeEventListener('mousemove', crop);
-      document.removeEventListener('mouseup', stopCropping);
+
+      if(e.type == 'touchend') {
+        document.removeEventListener('touchmove', crop);
+        document.removeEventListener('touchend', stopCropping);
+      } else {
+        document.removeEventListener('mousemove', crop);
+        document.removeEventListener('mouseup', stopCropping);
+      }
     }
 
     if (!image || !image.tagName || image.tagName.toLowerCase() !== 'img')
