@@ -41,8 +41,8 @@
       e.preventDefault();
       e.stopPropagation();
 
-      // if (e.which !== 1)
-      //   return;
+      if (e.type == 'mousedown' && e.which !== 1)
+        return;
 
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
@@ -125,8 +125,8 @@
       e.preventDefault();
       e.stopPropagation();
 
-      // if (e.which !== 1)
-      //   return;
+      if (e.type == 'mousedown' && e.which !== 1)
+        return;
 
       var figurePosition = self.calculatePosition(self.elements.figure),
           imagePosition = self.calculatePosition(self.elements.image);
