@@ -3,7 +3,7 @@ var image,
     imageWithFigure,
     figureWithImage;
 
-describe('imago.js', function(argument) {
+describe('imago.js', function() {
   beforeEach(function() {
     jasmine.getFixtures().fixturesPath = '../../base/test';
     jasmine.getStyleFixtures().fixturesPath = '../../base/test';
@@ -42,8 +42,8 @@ describe('imago.js', function(argument) {
 
     it('wrap image with a figure', function(done) {
       expect(image.parentElement.id).toEqual('jasmine-fixtures');
-      new Imago(image);    
-      
+      new Imago(image);
+
       setTimeout(function() {
         expect(image.parentElement.nodeName.toLowerCase()).toEqual('figure');
         done();
@@ -67,7 +67,7 @@ describe('imago.js', function(argument) {
       expect(image).not.toHaveAttr('data-height');
       expect(image).not.toHaveAttr('data-top');
       expect(image).not.toHaveAttr('data-left');
-      
+
       new Imago(image);
 
       setTimeout(function() {
@@ -88,7 +88,7 @@ describe('imago.js', function(argument) {
       expect(imageWithAttributes).toHaveAttr('data-height', '424');
       expect(imageWithAttributes).toHaveAttr('data-top', '0');
       expect(imageWithAttributes).toHaveAttr('data-left', '0');
-      
+
       new Imago(imageWithAttributes);
 
       setTimeout(function() {
@@ -101,9 +101,5 @@ describe('imago.js', function(argument) {
         done();
       }, 500);
     });
-
-    afterEach(function(done) {
-      done();
-    }, 1000);
   });
 });

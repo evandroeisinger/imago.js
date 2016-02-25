@@ -2,9 +2,9 @@
   'use strict';
 
   if (typeof define === 'function' && define.amd)
-    define('imago-js', [], new Imago());
+    define('imago-js', [], Imago);
   else if (typeof exports !== 'undefined')
-    exports.Imago = new Imago();
+    exports.Imago = Imago;
   else
     window.Imago = new Imago();
 }(function() {

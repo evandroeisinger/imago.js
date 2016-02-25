@@ -1,6 +1,6 @@
 {
   "name": "imago-js",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "Evandro Eisinger <evandroeisinger@gmail.com>",
   "main": "src/imago.js",
   "repository": {
