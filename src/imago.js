@@ -6,7 +6,7 @@
   else if (typeof exports !== 'undefined')
     exports.Imago = Imago;
   else
-    window.Imago = Imago;
+    window.Imago = new Imago();
 }(function() {
   'use strict';
 
